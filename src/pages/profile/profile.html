@@ -1,0 +1,335 @@
+<ion-header center class="{{user ? 'loggedin': 'non-loggedin'}}">
+	<ion-buttons start>
+        <button ion-button menuToggle>
+            <ion-icon name="md-menu"></ion-icon>
+        </button>
+    </ion-buttons>
+    <ion-title *ngIf="!isLoggedIn"><h1>{{config.get_translation('login_heading')}}</h1></ion-title>
+    <ion-title *ngIf="isLoggedIn">
+    	<div class="user_intro" avatarscrollzoomout>
+			<div class="avatar" (click)="changeImage()">
+				<lazy-img [inputSrc]="config.user.avatar"></lazy-img>
+			</div>
+			<h1>{{user?.name}}<span>{{user?.email}}</span></h1>
+    		<button icon-only ion-button clear color="white" (click)=initiate_logout()><ion-icon name="md-power"></ion-icon></button>
+		</div>
+    </ion-title>
+    <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" *ngIf="isLoggedIn" #ProfileTabs id="profiletabs" spaceBetween="0" slidesPerView="4" (ionSlideDidChange)="onTabChanged()">
+        <ion-slide *ngFor="let tab of profile?.tabs; let i=index;" (click)="selectedTab(i)">
+        	<div class="profile_tab">
+          		<ion-icon [name]=tab.value></ion-icon>
+            	<span>{{tab.label}}</span>
+        	</div>
+        </ion-slide>
+    </ion-slides>
+</ion-header>
+<ion-content class="{{isLoggedIn ? 'loggedin': 'non-loggedin'}}">
+	<div class="signin_register" *ngIf="!isLoggedIn">
+		<div class="signin_content" padding>
+			<div id="signin" *ngIf="!register && !signin" center>
+				<h1 color="white" [innerHtml]="config.get_translation('login_title')"></h1>
+				<p color="white" [innerHtml]="config.get_translation('login_description')"></p>
+				<ion-grid>
+					<ion-row>
+						<ion-col *ngIf="config.settings.facebook.enable">
+							<button id="facebook_login" ion-button full icon-left (click)="onFbLogin()"><ion-icon name="logo-facebook"></ion-icon>Facebook</button>
+						</ion-col>
+						<ion-col *ngIf="config.settings.google.enable">
+							<button id="google_login" ion-button full icon-left (click)="onGoogleLogin()"><ion-icon name="logo-google"></ion-icon>Google</button>
+						</ion-col>
+					</ion-row>
+					<ion-row *ngIf="config.settings.registration">
+						<ion-col>
+							<button ion-button block outline color="white" (click)="enableRegister()" [innerHtml]="config.get_translation('signup_with_email_button_label')"></button>
+						</ion-col>
+					</ion-row>
+					<ion-row *ngIf="config.settings.registration">	
+						<ion-col col-12>
+							<p color="white" center [innerHtml]="config.get_translation('login_have_account')"></p>
+						</ion-col>
+					</ion-row>
+					<ion-row>
+						<ion-col col-12>
+							<button ion-button outline block color="white" (click)="showSignIn()" [innerHtml]="config.get_translation('login_signin')"></button>
+						</ion-col>
+					</ion-row>
+					<ion-row>	
+						<ion-col col-12>
+							<button ion-button clear color="white" [innerHtml]="config.get_translation('login_terms_conditions')" (click)="showterms()"></button>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</div>
+			<div id="signin" *ngIf="signin" center>
+				<form [formGroup]="signinForm" (ngSubmit)="onSignIn()">
+					<ion-list>
+						<ion-item>
+							<ion-label floating [innerHtml]="config.get_translation('signin_username')"></ion-label>
+							<ion-input type="text" formControlName="username"></ion-input>
+						</ion-item>
+						<ion-item>
+							<ion-label floating [innerHtml]="config.get_translation('signup_password')"></ion-label>
+							<ion-input type="password" formControlName="password"></ion-input>
+						</ion-item>
+					</ion-list>
+					<button ion-button block outline type="submit" color="white" [innerHtml]="config.get_translation('login_signin')"></button>
+					<button ion-button clear center icon-left color="white" (click)="backToLogin()" [innerHtml]="config.get_translation('login_back')"><ion-icon name="md-arrow-back"></ion-icon></button>
+				</form>
+			</div>
+			<div id="register" *ngIf="register" center>
+				<form [formGroup]="signupForm" (ngSubmit)="onSignUp()">
+					<ion-list>
+						<ion-item>
+							<ion-label floating [innerHtml]="config.get_translation('signup_username')"></ion-label>
+							<ion-input type="text" formControlName="username"></ion-input>
+							<span *ngIf="signupForm.controls.username.pending"><ion-spinner></ion-spinner></span>
+						</ion-item>
+						<ion-item>
+							<ion-label floating [innerHtml]="config.get_translation('signup_email')"></ion-label>
+							<ion-input type="text" formControlName="email"></ion-input>
+						</ion-item>
+						<ion-item>
+							<ion-label floating [innerHtml]="config.get_translation('signup_password')"></ion-label>
+							<ion-input type="password" formControlName="password"></ion-input>
+						</ion-item>
+					</ion-list>
+					<button ion-button block outline type="submit" color="white" [innerHtml]="config.get_translation('login_signup')"></button>
+					<button ion-button clear center icon-left color="white" (click)="backToLogin()" [innerHtml]="config.get_translation('login_back')"><ion-icon name="md-arrow-back"></ion-icon></button>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div class="loggedin_user" *ngIf="isLoggedIn">
+
+		<div id="profilecontent" padding>
+			<ion-refresher (ionRefresh)="doRefresh($event)">
+			    <ion-refresher-content pullingText="{{config.get_translation('pull_to_refresh')}}"
+			      pullingIcon="arrow-dropdown"
+			      refreshingSpinner="circles"
+			      refreshingText="{{config.get_translation('refreshing')}}"></ion-refresher-content>
+		  	</ion-refresher>
+	        <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" id="profilelides" #ProfileSlides (ionSlideDidChange)="onSlideChanged()">
+	            <ion-slide *ngFor="let tab of profile?.tabs; let i=index;">
+	                <div [ngClass]=tab *ngIf="(tab.key == 'dashboard')">
+	                	<ion-grid id="dashboard">
+		                	<ion-row>
+							    <ion-col *ngFor="let d of profile?.data | callback: filterDashData">
+							    	<div [class]="d.key">
+							    		<strong>{{d.value}}</strong>
+							    		<span>{{d.label}}</span>
+							    	</div>
+						    	</ion-col>
+						  	</ion-row>
+					  	</ion-grid>
+					  	<div class="objects" *ngFor="let d of profile?.data | callback: filterObjectData">
+					  		<hr *ngIf="d.value.length">
+					  		<h3 class="heading" *ngIf="d.value.length"><span>{{d.label}}</span></h3>
+					  		<ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" [slidesPerView]=getSlidesPerView(d.key) spaceBetween="10" *ngIf="d.value.length">
+						        <ion-slide *ngFor="let obj of d.value">
+						        	<div class="annoucenment" *ngIf="obj.announcement">
+						          		<span>{{obj.title}}</span>
+						          		<div>{{obj.announcement}}</div>
+					          		</div>
+						        	<div class="certificate" *ngIf="obj.type == 'certificate'">
+						          		<img [src]="obj.value" *ngIf="checkImage(obj.value)" (click)="triggerImage(obj.value)">
+						          		<ion-icon name="md-easel"  *ngIf="!checkImage(obj.value)" (click)="triggerCertificateInBrowser(obj.value)"></ion-icon>
+					          		</div>
+					          		<div class="badge" *ngIf="obj.type == 'badge'">
+										<img [src]="obj.value" (click)="triggerImage(obj.value,obj.label)">
+						          		<span>{{obj.label}}</span>
+					          		</div>
+				            	</ion-slide>
+						    </ion-slides>
+					  	</div>
+					  	<div class="profile_chart">
+					  		<h3 class="heading">{{config.get_translation('course_chart')}}</h3>
+					  		<canvas #lineCanvas></canvas>
+					  	</div>
+					  	<div class="profile_chart">
+					  		<h3 class="heading">{{config.get_translation('quiz_chart')}}</h3>
+					  		<canvas #barCanvas></canvas>
+					  	</div>
+	                </div>
+	                <div id="profiletabs" *ngIf="(tab.key == 'profile')">
+	                	<ion-list *ngIf="profile.data.profile">
+	                		<div *ngFor="let group of profile.data.profile">
+								<ion-list-header>
+								    {{group.name}}
+							  	</ion-list-header>
+							    <ion-item *ngFor="let field of group.fields" (click)="editField(field)">
+							        <ion-label>{{field.name}}</ion-label>
+						  			<div [innerHtml]="field.value" item-content 
+						  			></div>	
+							    </ion-item>
+					  		</div>
+						</ion-list>
+	                </div>
+	                <div id="mycourses"  *ngIf="(tab.key == 'courses')">
+	                	
+	                	<div class="message" *ngIf="!profile.data.courses" [innerHtml]="config.get_translation('no_courses')">
+	                	</div>
+	                	<div *ngIf="profile.data.courses">
+	                		<ion-grid class="button-group">
+							  	<ion-row> 
+							    	<ion-col col-4>
+							      		<button ion-button [outline]="mycoursesactivetab == 0?null:''" block (click)="showMyCourses('all')">{{config.get_translation('all')}}</button>
+						    		</ion-col>
+							    	<ion-col col-4>
+							      		<button ion-button [outline]="mycoursesactivetab == 1?null:''" block (click)="showMyCourses('active')">{{config.get_translation('active')}}</button>
+							    	</ion-col>
+						    		<ion-col col-4>
+							      		<button ion-button [outline]="mycoursesactivetab == 2?null:''" block (click)="showMyCourses('finished')">{{config.get_translation('finished')}}</button>
+						    		</ion-col>
+							  	</ion-row>
+							</ion-grid>
+	                		<ion-grid>
+	                			<ion-row>
+	                				<ion-col col-12 col-sm-6 col-lg-4 col-xl-3 *ngFor="let course of profile.data.courses">
+					                	<ion-card *ngIf="course && course.show" [navPush]="courseStatusPage" [navParams]="{'course':course,'user':user}" >
+								            <div class="course_block">
+								                <div class="course_featured_image">
+								                    <img [src]=course.featured_image>
+								                </div>
+								                <ion-card-content class="align-left">
+								                    <ion-card-title>
+								                        {{course.name}}
+								                    </ion-card-title>
+								                    <span class="course_instructor">{{course.instructor.name}}</span>
+								                    <progress-bar [progress]="course.user_progress" ></progress-bar>
+								                    <span class="course_user_status" [innerHtml]="show_course_status(course.user_status)"></span>
+								                </ion-card-content>
+								            </div>
+								        </ion-card>
+							        </ion-col>
+							        
+						        </ion-row>
+					        </ion-grid>
+
+							
+				        </div>
+	                </div>
+	                <div id="profiletabs" *ngIf="(tab.key == 'results')">
+
+	                	<div id="message" class="message" *ngIf="!profile.data.results && !userService.saved_results" [innerHtml]="config.get_translation('no_results')"></div>
+	                	<ion-list *ngIf="userService.saved_results && userService.saved_results.length">
+	                		<ion-list-header>{{config.get_translation('app_quiz_results')}}</ion-list-header>
+	                		<div *ngFor="let sresult of userService.saved_results" [navPush]="resultPage" [navParams]="sresult">
+		                		<ion-item *ngIf="sresult.meta">
+							  		<ion-label >
+							  		 	<strong [innerHtml]="sresult.title"></strong>
+							  		 	<strong style="float:right;" > {{sresult.meta.marks}}  / <span>{{sresult.meta.max}}</span></strong>
+						  		 	</ion-label>
+						  		</ion-item>
+					  		</div>
+	                	</ion-list>
+	                	<div *ngIf="profile.data.results">
+
+		                	<ion-list *ngIf="profile.data.results">
+			                	<ion-list-header>{{config.get_translation('saved_quiz_results')}}</ion-list-header>
+							  	<ion-item *ngFor="let result of profile.data.results">
+							  		<ion-label *ngIf="userService.saved_results.indexOf(result) == -1" [navPush]="resultPage" [navParams]="result">
+							  		 	<strong [innerHtml]="result.title"></strong>
+							  		 	<strong style="float:right;">{{result.marks}}  / <span>{{result.max}}</span></strong>
+						  		 	</ion-label>
+						  		</ion-item>
+							</ion-list>
+				        </div>
+	                </div>
+	                <div id="profiletabs" *ngIf="(tab.key == 'gradebook')">
+	                	<div id="message" class="message" *ngIf="!profile.data.gradebook" [innerHtml]="config.get_translation('no_finished_courses')"></div>
+	                	<div *ngIf="profile.data.gradebook">
+	                		<div id="message" class="message" *ngIf="!profile.data.gradebook.length" [innerHtml]="config.get_translation('no_finished_courses')"></div>
+		                	<ion-card *ngFor="let grade of profile.data.gradebook">
+					            <div class="course_block">
+					                <div class="course_featured_image">
+					                    <img [src]=grade.featured_image>
+					                </div>
+					                <ion-card-content class="align-left">
+					                    <ion-card-title>
+					                        {{grade.name}}
+					                    </ion-card-title>
+					                    <ion-list>
+					                    	<ion-item>
+					                    		<ion-label>{{config.get_translation('score')}}</ion-label>
+					                    		<span>{{grade.score}}</span>
+					                    	</ion-item>
+					                    	<ion-item *ngIf="grade.certificate">
+					                    		<ion-label item-left>{{config.get_translation('certificate')}}</ion-label>
+					                    		<button ion-button clear><ion-icon name="md-link"></ion-icon></button>
+					                    	</ion-item>
+					                    	<ion-item *ngIf="grade.badge">
+					                    		<ion-label item-left>{{config.get_translation('badge')}}</ion-label>
+					                    		<button ion-button clear><ion-icon name="md-ribbon"></ion-icon></button>
+					                    	</ion-item>
+					                    </ion-list>
+					                    <button ion-button outline small icon-only *ngIf="grade.finish_access > 0"><ion-icon name="md-log-in"></ion-icon></button>
+						    			<button ion-button outline  small *ngIf="grade.retakes.remaining > 0"><ion-icon name="md-refresh"></ion-icon></button>
+					                </ion-card-content>
+					            </div>
+					        </ion-card>
+				        </div>
+	                </div>
+	                <div id="profiletabs" *ngIf="(tab.key == 'notifications')">
+
+	                	<div *ngIf="profile.data['notifications']">
+	                		<ion-list id="notifications">
+	                			<ion-item *ngFor="let notification of profile.data.notifications">
+	                				<span><friendlytime [time]="gettimediff(notification.time)"></friendlytime></span>
+	                				<div [innerHtml]="notification.content"></div>
+	                			</ion-item>
+	                		</ion-list>
+	                	</div>
+	                	<div *ngIf="!profile.data['notifications']">
+	                		<div class="message" [innerHtml]="config.get_translation('no_notification_found')">
+	                		</div>
+	                	</div>
+	                </div>
+	                <div id="profiletabs" *ngIf="(tab.key == 'activity')">
+	                	<div *ngIf="profile.data['activity']">
+	                		<ion-list id="activity">
+	                			<ion-item *ngFor="let activity of profile.data.activity">
+	                				<span><friendlytime [time]="gettimediff(activity.date)"></friendlytime></span>
+	                				<div [innerHtml]="activity.content"></div>
+	                			</ion-item>
+	                		</ion-list>
+	                	</div>
+	                	<div *ngIf="!profile.data['activity']">
+	                		<div class="message" [innerHtml]="config.get_translation('no_activity_found')">
+	                		</div>
+	                	</div>
+	                </div>
+	                <div id="profiletabs" *ngIf="(tab.key == 'settings')">
+	                	<ion-list>
+						    <ion-list-header [innerHtml]="config.get_translation('')"></ion-list-header>
+							    <ion-item>
+							      	<ion-toggle checked="false"></ion-toggle>
+							      	<ion-label [innerHtml]="config.get_translation('email_certificates')"></ion-label>
+							    </ion-item>
+						    <ion-list-header [innerHtml]="config.get_translation('saved_information')"></ion-list-header>
+						    	<ion-item>
+								    <ion-label [innerHtml]="config.get_translation('client_id')"></ion-label>
+							  		<ion-note item-end="" class="note note-md">{{config.settings.client_id}}</ion-note>
+							  	</ion-item>
+						    <ion-list-header [innerHtml]="config.get_translation('manage_data')"></ion-list-header>
+							    <ion-item>
+							    	<ion-label [innerHtml]="config.get_translation('clear_cache')"></ion-label>
+	    							<button ion-button outline item-end [innerHtml]="config.get_translation('clear_cache')"(click)="clearCache()"></button>
+					    		</ion-item>
+					    		<ion-item>
+							    	<ion-label [innerHtml]="config.get_translation('sync_data')"></ion-label>
+	    							<button ion-button outline item-end [innerHtml]="config.get_translation('sync_data')" (click)="syncData()"></button>
+					    		</ion-item>
+	                	</ion-list>
+	                	<button ion-button full [innerHtml]="config.get_translation('logout')" (click)="initiate_logout()"></button>
+	                </div>
+	            </ion-slide>
+	        </ion-slides>
+	    </div>
+	</div> 
+	<div *ngIf="checkLoadMoreRequired()">
+    	<ion-infinite-scroll *ngIf="more[currentTab]" threshold="100%" (ionInfinite)="loadMore($event)">
+           <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
+    	</ion-infinite-scroll>
+    </div>
+</ion-content>

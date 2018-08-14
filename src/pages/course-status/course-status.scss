@@ -1,0 +1,337 @@
+ion-tabs page-course-status vg-player.native-fullscreen vg-controls{
+	bottom:50px;
+}
+
+page-course-status {
+	.title{
+		progress-bar{
+			position:relative;
+			.progress_wrap{
+				padding: 5px 0px 2px 35px;
+				span{
+				    position: absolute;
+				    top: -6px;
+				    left: 0;
+				    color:#fff;
+				}
+			}
+		}
+	}
+
+	#coursecurriculumtabs{
+		height:auto;
+		position:relative;
+		&:after{
+		    content: '';
+		    display: block;
+		    position: absolute;
+		    width: 100%;
+		    height: 10px;
+		    bottom: 10px;
+		    left: 0;
+		    background: rgba(0,0,0,0.2);
+		}
+	}
+
+	#course_status_content{
+	    ion-slide{
+	    	.slide-zoom>h3{
+    		    margin-top: 0;
+			    color: #333;
+			    padding: 30px 20px 0;
+			    text-align: start;
+			    friendlytime{
+			    	font-size: 80%;
+				    display: block;
+				    opacity: 0.5;
+				    line-height: 2;
+			        margin: 10px 0;
+			    }
+			    .section_heading{
+		    	    position: absolute;
+				    top: 12px;left:20px;
+				    font-size: 1.2rem;
+				    opacity: 0.6;
+			    }
+			    span.complete{
+			    	background: map-get($colors, primary);
+				    display: inline-block;
+				    padding: 4px;
+				    border-radius: 3px;
+				    font-size: 1.1rem;
+				    text-transform: uppercase;
+				    font-weight: 600;
+				    position: absolute;
+				    right: 10px;
+				    top: 22px;
+				    color: #fff;
+			    }
+	    	}
+	    }
+	    #maincontent{
+			font-size: 1.4rem;
+		    line-height: 2rem;
+		    text-align: start;
+		    background: #fff;
+		    overflow:hidden;
+		    h3{color:#222;}
+		    ul.sectionunits {
+			    list-style:none;
+			    padding:0;
+			    margin:0;
+				&>li>div{
+					position:relative;
+				    line-height:1.4rem;
+				    font-size:1.4rem;
+				    display:block;
+				    padding:8px 8px 8px 30px;
+				    border-bottom:1px solid rgba(0,0,0,0.05);
+				    &>friendlytime{
+					    display:block;
+					    font-size:1rem;text-transform:uppercase;
+					    opacity:0.4;
+				    }
+				    &:before{
+				    	content:'';
+					    display:block;
+					    position:absolute;
+					    width:20px;height:20px;
+					    background:rgba(0,0,0,0.2);
+					    left:0;
+					    top:8px;
+					    border-radius:50%;
+				    }
+				    &.done:before,
+				    &.active:before{
+				    	content:"\f2ba";
+    					background:none;
+    					font-family:"Ionicons";
+    					font-size:24px;top:12px;
+    					color:map-get($colors, primary);
+				    }
+				}
+				&>li:last-child>div{border:none}
+			}
+		}
+		vg-player{margin-top:30px}
+		.audio-container video#my-audio {height :50px}
+		.audio-container .hide{bottom:0;display: inline-flex!important;}
+	}
+
+	#toggleTimeline{
+		button{
+			width:48px;
+			height:48px;
+			border-radius:50%;
+			box-shadow:0 2px 4px rgba(0,0,0,0.2);
+			position:fixed;
+			z-index:999;
+			top:40px;
+			left:40px;
+			&.dragged{
+				transform: translate3d(-1rem, -1rem, 0px);
+			}
+		}
+	}
+	#toggleExtras{
+		position:fixed;
+		bottom:56px;
+		right:71px;
+		z-index:99;
+		button{
+			float:right;
+			margin-right:10px;
+			width:48px;
+			height:48px;
+			border-radius:50%;
+			box-shadow:0 2px 4px rgba(0,0,0,0.2);
+		}
+	}
+	#course_timeline{
+	    position: fixed;
+	    left: 0;
+	    top: 0;
+	    z-index: 9;
+	    background: map-get($colors, primary);
+	    overflow-y: auto;
+	    padding: 60px 15px 40px;
+	    height: 100vh;
+	    width: 100%;
+	    transition: all 500ms ease-in;
+	    transform:translateX(-200%);
+	    &.active{
+	    	transform:translateX(0);
+	    }
+	    .progress_wrap{
+		    .progress-outer{
+	    	    background: rgba(0,0,0,0.2);
+	    	    .progress-inner{background: #fff;}
+		    }
+		    span{color:#fff;}
+	    }
+	    ion-item{
+	    	color: #fff;
+		    background: rgba(0, 0, 0, 0.2);
+		    padding:0px 15px 0 40px;
+		    display: inline-block;
+		    width: 100%;position:relative;
+	    	&.section{
+	    		padding: 0;
+			    border: none;
+			    background: none;
+	    	}
+	    	&.unit,&.quiz{
+	    		span{
+		    		&:before{
+	    			    content: '';
+					    position: absolute;
+					    left: 10px;
+					    width: 20px;
+					    height: 20px;
+					    background: rgba(255,255,255,0.2);
+					    border-radius: 50%;
+		    		}
+		    		&.done:before,
+		    		&.active:before{
+	    				content:"\f2e0";
+	    				background:none;font-family:"Ionicons";font-size:20px;
+					}
+					&.done:before{content:"\f2ba";}
+	    		}
+	    	} 
+	    	&.quiz span:before{content:"\f394";background:none;font-family:"Ionicons";font-size:20px;}
+    	}
+	    .section+.unit{
+	    	border-radius:5px 5px 0 0;
+	    }
+
+	    .progress_wrap > span{
+	    	float:right;
+	    }
+	    progress-bar+span{
+	    	font-size: 1.4rem;
+		    color: #fff;
+		    font-weight: 600;
+		    margin-top: -5px;
+		    display: block;
+		    float: left;
+	    }
+	}
+
+	ion-grid{
+	    margin: 0 -10px;
+    	width: auto;
+		
+		.user_marks{
+			text-align: center;
+		    padding: 5px 0 10px;
+		    border-radius: 0px;
+		    p{
+		    	font-size: 1rem;
+	    		line-height: 0;	
+			}
+		}
+		.user_timer{
+			position:relative;
+		    padding:5px 10px 9px;
+		    border-bottom:none;
+		    text-align:center;
+		    p{
+			    font-size:1rem;
+			    line-height:0;
+			}
+		}
+		.user_progress {
+		    padding:5px 10px 6px;
+		    text-align:center;
+			p{
+			    font-size:1rem;
+			    line-height:0;
+			}
+			progress-bar{ 
+				.progress_wrap{
+					padding:0;
+					span{
+			    		font-size:1rem;
+			    		color:#444;
+					}
+				}
+			}
+		}
+	}
+	#quiz_questions .swiper-container{
+		padding-bottom:60px;
+	}
+
+	.quiz_result{
+		h3{
+			display:none;
+		}
+	}
+	.main_question ion-label {
+	    overflow:none;
+	    text-overflow: initial;
+	    white-space: initial;
+	}
+	.quiz_questions{
+		list-style:none;
+		padding:0;margin:0;
+		counter-reset: quiz-question-counter;
+		& > li{
+			padding:10px 0;position:relative;
+			border-bottom:1px solid rgba(0,0,0,0.05);
+			counter-increment: quiz-question-counter;
+			&:before{
+			    content: counter(quiz-question-counter);
+			    position: absolute;
+			    left: 0;
+			    top: 4rem;
+			    font-size: 6rem;
+			    font-weight: 600;
+			    color: rgba(0,0,0,0.05);
+			    z-index: 0;
+			}
+			.q~span{
+				display:block;
+			}
+		}
+		&+div{
+			padding:2rem 0;
+			font-size:2rem;
+			strong{
+				float:right;
+			}
+		}
+	}
+
+	ion-card{
+		question{
+		    padding: 15px;
+    		display: inline-block;
+    		position:relative;
+    		width:100%;
+    		.marks{text-align:center;}
+    		.result{
+    			.correct,.incorrect{
+	    			text-align:center;
+	    		}
+    		} 
+		}
+	}
+	#curriculum_timeline{
+		margin-top:20px;
+	}
+	#course_buttons{
+		button{
+			border: 2px solid;
+		    margin: 0 0 10px 0;
+		    border-radius: 5px;
+		}
+	}
+	.retake_quiz span{
+		display:block;
+	}
+}
+.course_item_iframe {
+    margin-top: 30px;
+}

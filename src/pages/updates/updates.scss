@@ -1,0 +1,27 @@
+page-updates {
+	ion-label{
+		span{
+			font-size: 1rem;
+		    text-transform: uppercase;
+		    letter-spacing: 1px;
+		    opacity: 0.6;
+		    font-weight: 600;
+		}
+		white-space: inherit;
+	}
+	ion-list-header{
+		background: transparent !important; 
+		border: none !important; 
+		padding-left: 0 !important; 
+		font-weight: 600 !important; 
+		color: #444 !important;
+	}
+
+	ion-item-sliding{
+		border: 1px solid rgba(0,0,0,0.2);
+		.item-inner{
+			border:none !important;
+		}
+	}
+
+}

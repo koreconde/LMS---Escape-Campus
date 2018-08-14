@@ -1,0 +1,24 @@
+<div class="course_block" [navPush]="coursePage" [navParams]="course">
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6 col-sm-12>
+                <div class="course_featured_image" [ngStyle]="{ 'background-image':'url('+course.featured_image+')'}">
+                    <lazy-img [inputSrc]="course.featured_image" [imgStyle]="style"></lazy-img>
+                </div>
+            </ion-col>
+            <ion-col col-6 col-sm-12 #featured >
+                <ion-card-content class="align-left">
+                    <ion-card-title>
+                        {{course.name}}
+                    </ion-card-title>
+                    <star-rating [rating]="course.average_rating"></star-rating>
+                    <span class="course_instructor">{{course.instructor.name}}</span>
+                    <div class="course_price" *ngIf="course.price_html && !config.isString(course.price_html) && course.price_html.length >1">{{config.get_translation('pricing_options')}}</div>
+                    <div class="course_price" *ngIf="course.price_html && !config.isString(course.price_html) && course.price_html.length == 1" [innerHtml]="course.price_html[0].html"></div>
+                    <div class="course_price" *ngIf="course.price_html && config.isString(course.price_html)" [innerHtml]=course.price_html></div>
+                </ion-card-content>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>
+<div class="wishlist {{active}}" (click)="addToWishlist()"></div>

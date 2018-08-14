@@ -1,11 +1,23 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      About
-    </ion-title>
-  </ion-navbar>
+    <ion-navbar  color="transparent">
+        <ion-buttons start>
+            <button ion-button menuToggle>
+                <ion-icon name="md-menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>{{fullCourse?.course.name}}</ion-title>
+    </ion-navbar>
 </ion-header>
+<ion-content elastic-header fixedscrollheader>
 
-<ion-content padding>
+<h1></h1>
+<ion-grid>
+	<ion-col>
+		This is something about us
+	</ion-col>
+	<ion-col>
+		this is something about us.
+	</ion-col>
+</ion-grid>
 
 </ion-content>

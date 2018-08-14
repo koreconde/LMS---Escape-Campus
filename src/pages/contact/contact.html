@@ -1,17 +1,81 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Contact
-    </ion-title>
-  </ion-navbar>
+    <ion-navbar  color="transparent" >
+        <ion-buttons start>
+            <button ion-button menuToggle>
+                <ion-icon name="md-menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>{{config.get_translation('contact_page')}}</ion-title>
+            <ion-buttons end>
+                <button ion-button (click)="openSearch()">
+                    <ion-icon name="md-search"></ion-icon>
+                </button>
+            </ion-buttons>
+            <ion-buttons end>
+                <button ion-button [navPush]="profilePage" [navParams]="userdata">
+                    <ion-icon name="md-contact" *ngIf="!config.isLoggedIn"></ion-icon>
+                    <img *ngIf="config.isLoggedIn" [src]="config.user?.avatar">
+                </button>
+            </ion-buttons>
+    </ion-navbar>
 </ion-header>
+<ion-content padding>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12 col-sm-6>
+                <h3 [innerHtml]="config.contactinfo.title" class="heading"></h3>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <div [innerHtml]="config.contactinfo.email"></div>
+                        </ion-col>
+                        <ion-col>
+                            <div [innerHtml]="config.contactinfo.phone"></div>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <div [innerHtml]="config.contactinfo.message"></div>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <div [innerHtml]="config.contactinfo.address"></div>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-col>
+            <ion-col col-12 col-sm-6>
 
-<ion-content>
-  <ion-list>
-    <ion-list-header>Follow us on Twitter</ion-list-header>
-    <ion-item>
-      <ion-icon name="ionic" item-start></ion-icon>
-      @ionicframework
-    </ion-item>
-  </ion-list>
+                <form [formGroup]="contact" (ngSubmit)="logForm()">
+                    <ion-item>
+                        <ion-label floating>{{config.get_translation('contact_name')}}</ion-label>
+                        <ion-input type="text" formControlName="name"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating>{{config.get_translation('contact_email')}}</ion-label>
+                        <ion-input type="text" formControlName="email"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label floating>{{config.get_translation('contact_message')}}</ion-label>
+                        <ion-textarea formControlName="message" name="message"></ion-textarea>
+                    </ion-item>
+                    <ion-item>
+                        <button ion-button type="submit" block [disabled]="!contact.valid"><ion-icon name="md-send"></ion-icon></button>
+                    </ion-item>
+                </form>
+                <ion-list>
+                    <ion-list-header>{{config.get_translation('contact_follow_us')}}</ion-list-header>
+                <ion-item>
+                    <ion-icon name="logo-twitter" item-left></ion-icon>
+                        @{{config.get_translation('config.contactinfo.twitter')}}
+                </ion-item>
+                <ion-item>
+                    <ion-icon name="logo-facebook" item-left></ion-icon>
+                        @{{config.get_translation('config.contactinfo.facebook')}}
+                </ion-item>
+            </ion-list>
+        </ion-col>
+    </ion-row>
+</ion-grid>
 </ion-content>

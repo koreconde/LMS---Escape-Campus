@@ -1,0 +1,150 @@
+<ion-header>
+    <ion-navbar  color="transparent" >
+        <ion-buttons start>
+            <button ion-button menuToggle>
+                <ion-icon name="md-menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>{{title}}<span *ngIf="subtitle != 'false'">{{subtitle}}</span></ion-title>
+            <ion-buttons end>
+                <button ion-button (click)="openSearch()">
+                    <ion-icon name="md-search"></ion-icon>
+                </button>
+            </ion-buttons>
+            <ion-buttons end>
+                <button ion-button [navPush]="profilePage" [navParams]="userdata">
+                    <ion-icon name="md-contact" *ngIf="!config.isLoggedIn"></ion-icon>
+                    <img *ngIf="config.isLoggedIn" [src]="config.user?.avatar">
+                </button>
+            </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+	<div id="filters">
+		<ion-row>
+			<ion-col>
+				<div class="filter_sort_select">
+					<button ion-button block [innerHtml]="this.config.get_translation('filter_options')" (click)="activateFilters()"></button>
+				</div>
+			</ion-col>
+			<ion-col>
+				<div class="filter_sort_select">
+					<ion-item>
+						<ion-select placeholder="{{this.config.get_translation('sort_options')}}" (ionChange)="onSortOptions($event)" [selectOptions]="sortSelectOptions" [(ngModel)]="sortby" okText="{{config.get_translation('ok')}}" cancelText="{{config.get_translation('cancel')}}">
+							<ion-option value="popular">{{this.config.get_translation('popular')}}</ion-option>
+							<ion-option value="recent">{{this.config.get_translation('recent')}}</ion-option>
+							<ion-option value="alphabetical">{{this.config.get_translation('alphabetical')}}</ion-option>
+							<ion-option value="rated">{{this.config.get_translation('rated')}}</ion-option>
+							<ion-option value="start_date">{{this.config.get_translation('start_date')}}</ion-option>
+						</ion-select>
+					</ion-item>
+				</div>
+			</ion-col>
+		</ion-row>
+	</div>
+	<div id="searchbar">
+		<ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" placeholder="{{config.get_translation('directory_search_placeholder')}}" (ionInput)="onSearchInput()"></ion-searchbar>
+	</div>
+	<div *ngIf="childCategories.length">
+        <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" id="categories" spaceBetween="0" slidesPerView="3">
+            <ion-slide *ngFor="let category of childCategories" (click)="loadCategory(category)">
+                <ion-card>
+                    <div class="featured_category_block">
+                        <img [src]=category.image />
+                        <div class="category-content">
+                            <div class="category-title">{{category.name}}</div>
+                            <div class="category-subtitle">{{category.count}} Courses</div>
+                        </div>
+                    </div>
+                  </ion-card>
+            </ion-slide>
+        </ion-slides>
+	</div>
+	<div *ngIf="!courses.length">
+		<div class="message" [innerHtml]="this.config.get_translation('not_found')">
+		</div>
+	</div>
+	<div id="all_courses" *ngIf="courses.length">
+		<ion-grid>
+		  <ion-row>
+		    <ion-col col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 *ngFor="let lcourse of courses">
+		      	<ion-card>
+		            <courseblock [course]="lcourse"></courseblock>
+		        </ion-card>
+		    </ion-col>
+		  </ion-row>
+		</ion-grid>
+        
+        <ion-infinite-scroll *ngIf="!noMoreCoursesAvailable" (ionInfinite)="doInfinite($event)">
+           <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </div>
+</ion-content>
+<div id="filter_options" *ngIf="activateFilterBlock">
+	<h3>{{this.config.get_translation('filter_options')}}</h3>
+	<ion-list>
+		<ion-item *ngIf="this.config.directoryFilters.categories">
+			<ion-label>{{this.config.get_translation('select_category')}}</ion-label>
+			<ion-select [(ngModel)]="selectedCategories"   multiple="true" okText="{{config.get_translation('ok')}}" cancelText="{{config.get_translation('cancel')}}">
+				<ion-option *ngFor="let category of categories" [value]="category.term_id" [innerHtml]="category.name"></ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item *ngIf="this.config.directoryFilters.locations">
+			<ion-label>{{this.config.get_translation('select_location')}}</ion-label>
+			<ion-select [(ngModel)]="selectedLocations"   multiple="true" okText="{{config.get_translation('ok')}}" cancelText="{{config.get_translation('cancel')}}">
+				<ion-option *ngFor="let category of locations" [value]="category.term_id" [innerHtml]="category.name"></ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item *ngIf="this.config.directoryFilters.levels">
+			<ion-label>{{this.config.get_translation('select_level')}}</ion-label>
+			<ion-select [(ngModel)]="selectedLevels"   multiple="true" okText="{{config.get_translation('ok')}}" cancelText="{{config.get_translation('cancel')}}">
+				<ion-option *ngFor="let category of levels" [value]="category.term_id" [innerHtml]="category.name"></ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item *ngIf="this.config.directoryFilters.instructors">
+			<ion-label>{{this.config.get_translation('select_instructor')}}</ion-label>
+			<ion-select [(ngModel)]="selectedInstructors"  multiple="true" okText="{{config.get_translation('ok')}}" cancelText="{{config.get_translation('cancel')}}">
+				<ion-option *ngFor="let instructor of instructors" [value]="instructor.id" [innerHtml]="instructor.name"></ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item *ngIf="this.config.directoryFilters.free_paid">
+			<ion-label>{{this.config.get_translation('free_paid')}}</ion-label>
+			<ion-select [(ngModel)]="free_paid" okText="{{config.get_translation('ok')}}" cancelText="{{config.get_translation('cancel')}}">
+				<ion-option [value]="0" [innerHtml]="this.config.get_translation('all')"></ion-option>
+				<ion-option [value]="S" [innerHtml]="this.config.get_translation('all_free')"></ion-option>
+				<ion-option [value]="H" [innerHtml]="this.config.get_translation('all_paid')"></ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item *ngIf="this.config.directoryFilters.online_offline">
+			<ion-label>{{this.config.get_translation('select_online_offline')}}</ion-label>
+			<ion-select [(ngModel)]="offline" okText="{{config.get_translation('ok')}}" cancelText="{{config.get_translation('cancel')}}">
+				<ion-option [value]="0" [innerHtml]="this.config.get_translation('all')"></ion-option>
+				<ion-option [value]="S" [innerHtml]="this.config.get_translation('offline')"></ion-option>
+				<ion-option [value]="H" [innerHtml]="this.config.get_translation('online')"></ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item *ngIf="this.config.directoryFilters.start_date">
+			<ion-label>{{this.config.get_translation('after_start_date')}}</ion-label>
+			<ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="start_date"></ion-datetime>
+		</ion-item>
+		<ion-item *ngIf="this.config.directoryFilters.start_date">
+			<ion-label>{{this.config.get_translation('before_start_date')}}</ion-label>
+			<ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="end_date"></ion-datetime>
+		</ion-item>
+		
+	</ion-list>
+	<button ion-button block id="apply_filters" (click)="applyFilters()">{{this.config.get_translation('apply_filters')}}</button>
+	<ion-row>
+		<ion-col>
+			<button ion-button clear  icon-only color="white" (click)="resetFilters()">
+				<ion-icon name="md-refresh"></ion-icon>
+			</button>
+		</ion-col>
+		<ion-col>
+			<button ion-button clear icon-only color="white" (click)="closeFilters()">
+				<ion-icon name="md-close"></ion-icon>
+			</button>
+		</ion-col>
+	</ion-row>
+	
+</div>

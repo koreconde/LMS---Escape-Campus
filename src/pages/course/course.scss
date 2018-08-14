@@ -1,0 +1,158 @@
+page-course {
+	.scroll-content{margin-top: 0 !important;}
+	ion-slides[slidesperview="3"] ion-slide{max-width:none;}
+	#coursecontent{
+		background:#f6f6f6;
+		z-index:9;position:relative;
+	}
+	
+	#coursetabs{
+		border-bottom:2px solid rgba(0,0,0,0.05);
+		.swiper-slide{
+			button{
+				position:relative;color:#333;
+				background:transparent;padding:10px 10px 12px;
+				font-size:1.3rem;font-weight:600;
+				text-transform:uppercase;
+			}
+		}
+		ion-slide.swiper-slide.swiper-slide-active:after{
+			content:'';
+			position:absolute;
+			left:0;bottom:0;
+			width:100%;height:2px;
+			background:#009dd8;
+			display:block;
+		}
+	}
+
+	#courseslides{
+		.slide-zoom{
+			text-align:left;
+			padding-top:30px;
+		}
+	}
+	.course_instructor{
+		img{
+			width:24px;height:24px;margin-right:10px;
+			border-radius:50%;float:left;
+		}
+	}
+	.card{
+		.card-title{padding:15px 15px 0;}
+		star-rating{float:right;}
+	}
+
+	.curriculum{
+	    border: 1px solid #ccc;
+	}
+	#featured{
+		position:relative;
+		& > img{
+		    width: 100%;
+		    object-fit: cover;
+		    height: 30vh;
+		    min-height: 320px;
+		}
+		.on_featured_image{
+			position:absolute;
+			left:0;
+			bottom:-2px;
+			width:100%;
+			color:#fff;
+			background: linear-gradient(to top, rgba(0,0,0,0.8) 0, transparent 100%);
+			ion-row{
+				padding: 0 10px;
+				font-size:1.4rem;
+				.star-rating{font-size:1.6rem;}
+				.ion-md-contacts{margin-right:10px;}
+			}
+			button{
+				color:#fff;
+				background:rgba(0,0,0,0.2);
+				width: 100%;
+				border-radius: 0;
+			}
+		}
+	}
+
+	#course_button{    
+		position: fixed;
+	    z-index: 99;
+	    bottom: 0;
+	    height:auto !important;
+	    right: 0;
+	    margin: 0;
+	    border-radius: 0;
+	    width: 100%;
+		padding: 15px;
+    	font-size: 2rem;
+    }
+    div#buy_popup {
+	    position: fixed;
+	    left: 0;
+	    top: 0;
+	    width: 100%;
+	    height: 100vh;
+	    display: block;
+	    z-index: 99;
+	    background: rgba(0, 0, 0, 0.6);
+	    padding: 30px;
+	    text-align: center;
+	    overflow:scroll;
+	    color: #444;
+	    border-radius: 5px;
+	    transform: translateY(10000vh);
+	    transition: all .2s ease-in;
+	    h4 {
+		    font-size: 22px !important;
+		    font-weight: 800 !important;
+		    text-align: center;
+		}
+		.close_pp{
+			position: absolute;
+		    right: 20px;
+		    top: 10px;
+		    font-size: 35px;
+		    font-weight: 800;
+		    color: red;
+		}
+		.right{
+			float:right;
+		}
+		ul.extras{
+		    list-style: none;
+    		padding: 0;
+    		li{
+    			label{
+					width: 60%;
+		    		display: inline-block;
+				}
+    		} 
+		}
+		.updown{
+			margin: 10px 0;
+    		display: inline-block;
+		}
+		ion-item{
+			label.item_html{
+				margin: 10px 0;
+	    		display: inline-block;
+			}
+			&.highlighted{
+				background:rgba(230, 230, 230,0.99);
+			}
+		}
+		&.active{
+			transform: translateY(0);
+		}
+	}
+
+	div#buy_popup ion-list{
+	    margin-top:20%;
+	}
+}
+
+ion-tabs page-course #course_button {
+	bottom:4rem;
+}

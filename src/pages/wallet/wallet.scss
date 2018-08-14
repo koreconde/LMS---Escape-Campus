@@ -1,0 +1,99 @@
+page-wallet {
+	
+	ion-navbar,.toolbar-background{
+		background:map-get($colors, primary) !important;
+	}
+	#wallettabs ion-slide{
+		max-width:50vw;
+	}
+	#wallettabs{
+		padding:10px 20px;
+		.swiper-container{
+		    color: #fff;border-radius:40px;
+		    background: rgba(255,255,255,0.2) !important;
+			.swiper-slide {
+				.wallet_tab{
+		    		border-radius:20px;
+		    		padding:8px;
+		    	}
+			    &.swiper-slide-active{
+			    	.wallet_tab{
+					    background: #fff !important;
+			    		color: map-get($colors, primary);
+			    	}
+				}
+			}
+		}
+	} 
+	#walletslides{
+		.swiper-slide:first-child{
+			background:map-get($colors, primary);
+			color:#fff;
+		}
+	} 
+	h1{
+		font-size:5rem;
+	}
+	.highlight{
+		padding:3rem 0;
+		color: map-get($colors, primary);
+		
+	}
+	ion-card.recharge{
+		color:#444;
+		border-radius:2rem;
+		padding:2rem 0;
+		svg{
+			max-width:4rem;
+		}
+		h3.heading{
+			display:block;
+			&>span:first-child{
+				font-size:4rem;
+				font-weight:800;
+			}
+		}
+	}
+
+	.transaction{
+		span{
+			font-size:11px;opacity:0.6;
+			&.credit,&.debit{
+			    color:#fff;
+			    text-transform:uppercase;
+			    background:map-get($colors, price);;
+			    padding:2px 5px;margin-right:10px;
+			    border-radius:2px;
+			}
+			&.debit{
+				background:map-get($colors, orange);
+			}
+		}
+		h2{
+			padding:2px;
+			span{
+				font-size: 5rem;
+			    opacity: 1;
+			    float: left;
+			    margin: 0 10px 0 0;
+			}
+		}
+	}
+	.walletslidecontent{
+		ion-grid{
+			position:absolute;
+			top:0;left:0;
+			width:100%;
+		}
+		#transaction_list{
+			position:absolute;
+			top:60px;left:0;width:100%;
+	    	overflow-y: scroll;
+    	    height: 70vh;
+    	    ion-item{
+    	    	padding:0 15px;
+    	    }
+		}
+	}
+	
+}

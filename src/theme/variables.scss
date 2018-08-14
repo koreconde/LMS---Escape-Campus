@@ -1,16 +1,6 @@
 // Ionic Variables and Theming. For more info, please see:
-// http://ionicframework.com/docs/theming/
-
-// Font path is used to include ionicons,
-// roboto, and noto sans fonts
+// http://ionicframework.com/docs/v2/theming/
 $font-path: "../assets/fonts";
-
-
-// The app direction is used to include
-// rtl styles in your app. For more info, please see:
-// http://ionicframework.com/docs/theming/rtl-support/
-$app-direction: ltr;
-
 
 @import "ionic.globals";
 
@@ -20,7 +10,7 @@ $app-direction: ltr;
 // To customize the look and feel of this app, you can override
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
-// http://ionicframework.com/docs/theming/overriding-ionic-variables/
+// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
 
 
@@ -34,13 +24,21 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
+  primary:    #009dd8,
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  title:      #313b3d,
+  white:      #fff,
+  transparent: transparent,
+  price:     #70c989,
+  orange:    #FF8A2A,
 );
 
+.split-pane-main .scroll-content{
+	background:#f6f6f6;
+}
 
 // App iOS Variables
 // --------------------------------------------------
@@ -48,19 +46,170 @@ $colors: (
 
 
 
-
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
+@font-face {
+  font-family: 'poppins';
+  src:  url('../assets/fonts/poppins-v3-latin/poppins-v3-latin-regular.eot');
+  src:  url('../assets/fonts/poppins-v3-latin/poppins-v3-latin-regular.eot#iefix') format('embedded-opentype'),
+    url('../assets/fonts/poppins-v3-latin/poppins-v3-latin-regular.ttf') format('truetype'),
+    url('../assets/fonts/poppins-v3-latin/poppins-v3-latin-regular.woff') format('woff'),
+    url('../assets/fonts/poppins-v3-latin/poppins-v3-latin-regular.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
 
+.ion-page,
+ion-menu{
+	font-family:poppins;
+}
 
+.header-md::after{
+	background:none !important;
+}
+.button-md,
+.loading-md .loading-wrapper{box-shadow:none !important;}
 
+ion-slides{
+  &[slidesperview="2"] ion-slide{
+    max-width:45vw;
+  }
+  &[slidesperview="3"] ion-slide{
+    max-width:30vw;
+  }
+  &[slidesperview="4"] ion-slide{
+    max-width:22vw;
+  }
+}
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
 
+.toolbar{
+	//min-height:64px !important;
+	background:rgba(0,0,0,0.3);
+	//background:transparent;
+	//background: linear-gradient(to top, transparent 0, rgba(0,0,0,0.8) 100%);
+}
+.toolbar-background{
+	border:none !important;
+}
 
+ion-tabs{
+	.tabbar{
+		height:42px !important;
+	}
+}
+.toolbar-title{
+	padding:30px 0 10px;
+	text-transform:uppercase;
+	font-size:1.4rem !important;
+	line-height:1rem;
+	span{
+		display:block;
+		padding-top: 0.2rem;
+		;text-transform:none;font-weight:600;
+		font-size:1rem !important;
+	}
+}
+
+.bar-buttons{
+	ion-icon{
+		font-size: 2.4rem !important;
+	}	
+	img{
+	    width: 24px;
+	    height: 24px;
+	    border-radius: 50%;
+	}
+}
+
+.loading-wrapper {
+    background: none !important;
+    img{
+    	width:80px;
+    }
+}
+
+
+.back-button{
+	.back-button-text{
+		display:none;
+	}
+}
+
+
+h3.heading{
+	font-size:1.5rem;
+	margin:0;position:relative;
+	padding-bottom:1rem;
+	font-weight:600;
+	text-transform:uppercase;
+	line-height:1;
+	span{
+		&+span{
+			display: block;
+		    font-size: 1.4rem;
+		    text-transform: none;
+		    font-weight: 200;
+		    margin: 5px 0 0;
+		}
+	}
+	a{
+		float:right;
+	}
+}
+
+.center{
+     text-align:center;
+}
+
+.align-left{
+     text-align:left;
+}
+
+
+
+
+
+
+.featured_category_block{
+	position: relative;
+	text-align: center;
+	margin-bottom: -2px;
+	img{
+	    margin-bottom: -28px;
+	}
+	.category-content{
+		display: inline-block;
+	    width: 100%;
+	    z-index:9;
+	    height: 60px;
+	    position: relative;
+	    margin: -32px 0 -2px;
+	    background: linear-gradient(to bottom, transparent 0, black 100%);
+	}
+
+	.category-title {
+    	position: absolute;
+    	bottom: 30px;
+    	font-size: 1em;
+    	text-transform:uppercase;
+    	font-weight:600;
+    	width: 100%;
+    	color: #fff;
+  	}
+
+  	.category-subtitle {
+	    font-size: 0.8em;
+	    position: absolute;
+	    bottom: 15px;
+	    width: 100%;
+	    color: #fff;
+  	}
+}	
 
 
 // App Theme
@@ -72,11 +221,45 @@ $colors: (
 
 @import "ionic.theme.default";
 
+.message{
+	padding:12px 24px;
+	border:1px solid #f0c36d;
+	background-color: #f9edbe;
+	border-radius:2px;
+	font-size:11px;
+	font-weight:600;
+    text-transform: uppercase;
+	&.success{
+		color: #468847;
+		background-color: #dff0d8;
+		border-color: #d6e9c6;
+	}
+	h3, h3+p{margin:0;font-weight:600;color:#222;}
+	&.error{
+		border-color: #de5439;
+		background-color: #f16645;
+		color:#fff;
+		h3,h3+p{color:#444;}
+	}
+	p{
+		margin-bottom:0;
+	}
+}
 
+ion-modal {
+    .modal-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
 // Ionicons
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
-// http://ionicframework.com/docs/ionicons/
+// http://ionicframework.com/docs/v2/ionicons/
 
 @import "ionic.ionicons";
 
@@ -86,3 +269,284 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+.tab-button[aria-selected=true] .tab-button-icon {
+    color: #009dd8 !important;
+}
+
+// MISCELLANEOUS
+// --------------------------------------------------
+// MISCELLANEOUS CHANGES
+
+
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+}
+ 
+.gu-hide {
+  display: none !important;
+}
+ 
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+ 
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+
+/*
+ Videogular CSS
+ */
+
+@font-face {
+  font-family: 'videogular';
+  src:  url('../assets/fonts/videogular.eot?hj1wei');
+  src:  url('../assets/fonts/videogular.eot?hj1wei#iefix') format('embedded-opentype'),
+    url('../assets/fonts/videogular.ttf?hj1wei') format('truetype'),
+    url('../assets/fonts/videogular.woff?hj1wei') format('woff'),
+    url('../assets/fonts/videogular.svg?hj1wei#videogular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="vg-icon-"], [class*=" vg-icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'videogular' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.vg-icon-closed_caption:before {
+  content: "\e006";
+}
+.vg-icon-pause:before {
+  content: "\e018";
+}
+.vg-icon-play_arrow:before {
+  content: "\e01b";
+}
+.vg-icon-repeat:before {
+  content: "\e023";
+}
+.vg-icon-replay:before {
+  content: "\e025";
+}
+.vg-icon-skip_next:before {
+  content: "\e027";
+}
+.vg-icon-skip_previous:before {
+  content: "\e028";
+}
+.vg-icon-stop:before {
+  content: "\e02a";
+}
+.vg-icon-volume_down:before {
+  content: "\e030";
+}
+.vg-icon-volume_mute:before {
+  content: "\e031";
+}
+.vg-icon-volume_off:before {
+  content: "\e032";
+}
+.vg-icon-volume_up:before {
+  content: "\e033";
+}
+.vg-icon-hd:before {
+  content: "\e035";
+}
+.vg-icon-forward_10:before {
+  content: "\e038";
+}
+.vg-icon-forward_30:before {
+  content: "\e039";
+}
+.vg-icon-replay_10:before {
+  content: "\e03b";
+}
+.vg-icon-replay_30:before {
+  content: "\e03c";
+}
+.vg-icon-fullscreen:before {
+  content: "\e20c";
+}
+.vg-icon-fullscreen_exit:before {
+  content: "\e20d";
+}
+vg-player{
+	font-size:1.4rem;
+	vg-volume{
+		width:48px;
+	}
+	vg-playback-buttom{
+	    font-size: 1.4rem;
+	    background: rgba(255,255,255,0.9);
+	    color: #444;
+	    font-weight: 600;
+	}
+	vg-scrub-bar{
+		background:rgba(0,0,0,0.2);
+
+	}
+	video {
+	    width: 100%;
+	    height: 100%;
+	}
+}
+
+
+// IONIC FIXES
+
+.button-group {
+  .col {
+  	.button{
+  		font-size:1.2rem;
+  	}
+    &:first-child:not(:last-child) {
+      padding-right: 0;
+      .button {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+    &:not(:first-child):not(:last-child) {
+      padding-right: 0;
+      padding-left: 0;
+      .button {
+        border-radius: 0;
+        border-left:none;
+      }
+    }
+    &:last-child:not(:first-child) {
+      padding-left: 0;
+      .button {
+      	border-left:none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+}
+
+
+.finish_course_alert{
+    .message{
+      p{
+          margin-top: 0;
+          color: #444;
+      }
+    }
+    .alert-wrapper{
+      color:#fff !important;
+      max-width: 80vw !important;
+      border-radius: 10px !important; 
+      background:rgba(255,255,255,0.2) !important;
+    }
+    .alert-message{
+      max-height:80vh !important;
+    }
+    .congrats_badge,
+    .congrats_certificate{
+        position:relative;
+        margin: 15px 0;
+        padding: 100px 15px 15px;
+        text-align: center;
+        border-radius:10px;
+        background: linear-gradient(57deg, #fcaa30, #45b29d,#efc94c, #e27a3f, #df5a49);
+        background-size: 1000% 100%;
+        animation: ani 50s ease infinite;
+        
+        line-height: 1.4rem;
+
+        img{
+            border-radius: 50%;
+          margin: 15px;
+        }
+        &:before {
+          content: "\f326";
+          font-family: Ionicons;
+          position: absolute;
+          font-size: 72px;
+          top: 45px;
+          margin-left:-36px;
+          width: 100%;
+          text-align: center;
+          color: #fff;
+          text-shadow: 0 2px 2px rgba(255,255,255,0.2);
+        }
+    }
+
+    .congrats_certificate{
+      &:before{
+        content:"\f2e4";
+      }
+    }
+
+    .congrats_message{
+        background: #f6f6f6;
+        padding: 15px 15px 30px;
+        color: #444;
+        font-size: 1.6rem;
+        margin: 20px -30px;
+    }
+
+    .alert-button-group{
+      button{
+        color: #fff;
+        border-top-color: rgba(0,0,0,0.2);
+        position: absolute;
+        top: 0;  
+      }
+    }
+    .course_finish>*:not(div) {
+        background: #fff;
+        padding: 45px 45px;
+        margin: -30px;
+    }
+  }
+
+  /* IOS FIXES */
+
+  .swiper-slide lazy-img img{
+    max-height:none;
+  }
+
+  /* RTL FIXES */
+  html[dir="rtl"]{
+    .button-group .col:not(:first-child):not(:last-child) .button,.button-group .col:last-child:not(:first-child) .button {
+        border-left: 1px #009dd8 solid;
+    }
+    h3.heading a {
+        float: left;
+    }
+    page-profile .user_intro h1 + button {
+        left: 0px;
+    }
+    page-course-status #course_status_content ion-slide .slide-zoom > h3 span.complete{
+        left:10px;
+        right:auto;
+    }
+  }

@@ -1,0 +1,30 @@
+progress-bar {
+ 	
+ 	.progress_wrap{
+ 		padding:15px 0 10px;
+	 	.progress-outer {
+	        width: 100;
+	        padding: 0;
+	        text-align: center;
+	        background:#eee;
+	        border-radius: 4px;
+	    }
+	 
+	    .progress-inner {
+	        white-space: nowrap;
+	        overflow: hidden;
+	        padding: 2px;
+	        border-radius: 4px;
+	        background-color: map-get($colors, primary);
+	        position:relative;
+	    }
+	    span{
+	    	font-size: 1.4rem;
+		    font-weight: 600;
+		    color: rgba(0,0,0,0.4);
+	        margin-top: 5px;
+    		display: block;
+	    }
+ 	}
+    
+}

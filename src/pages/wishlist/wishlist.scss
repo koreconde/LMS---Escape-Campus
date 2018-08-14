@@ -1,0 +1,14 @@
+page-wishlist {
+
+}
+
+
+@media (max-width:500px){
+	page-wishlist {
+		courseblock .course_block .course_featured_image img{opacity:0;}
+		courseblock .course_block .course_featured_image{
+			background-size: cover !important;
+    		height: calc(100% + 20px);
+		}
+	}
+}

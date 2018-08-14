@@ -1,0 +1,83 @@
+<ion-header center color="transparent">
+    <ion-buttons start>
+        <button ion-button icon-only clear navPop>
+            <ion-icon name="md-arrow-back"></ion-icon>
+        </button>
+    </ion-buttons>
+</ion-header>
+<ion-content padding>
+    
+	<h3 [innerHtml]="navParams.data?.title"></h3>
+	
+	<div *ngIf="localresult && result.meta.questions.length">
+		<ion-row>
+			<ion-col>
+				<ion-label>{{config.get_translation('marks_obtained')}} : <strong>{{result.meta.marks}}</strong></ion-label>
+			</ion-col>
+			<ion-col>
+				<ion-label>{{config.get_translation('max_marks')}} : <strong>{{result.meta.max}}</strong></ion-label>
+			</ion-col>
+		</ion-row>
+		<ion-card *ngFor="let q of result.meta.questions">
+			<ion-card-content>
+				<div class="marks"><span *ngIf="q.user_marks!==''" [innerHtml]="q.user_marks"></span>/
+					<span *ngIf="q.marks" [innerHtml]="q.marks"></span></div>
+				<div [innerHtml]="q['content']"></div>
+				<div [ngClass]="{'correct':(q.marks>0), 'incorrect':(q.marks==0) }">
+					<ion-label>{{config.get_translation('marked_answer')}} </ion-label>
+					<div [innerHtml]="q.marked"></div>
+				</div>
+				<div class="correct_answer">
+					<ion-label>{{config.get_translation('correct_answer')}}  </ion-label>
+					<div [innerHtml]="q.correct"></div>
+				</div>
+				<div class="answer_explanation" *ngIf="q.explanation.length">
+					<ion-label>{{config.get_translation('explanation')}} </ion-label>
+					<div [innerHtml]="q.explanation"></div>
+				</div>	
+			</ion-card-content>
+		</ion-card>	
+		<button ion-button *ngIf="result.meta.retakes">
+			{{config.get_translation('retake_quiz')}}
+			<span>{{result.meta.retakes}} {{config.get_translation('remaining')}}</span>
+		</button>	
+	</div>
+	<p *ngIf="fullresult.error" [innerHtml]="fullresult.error"></p>
+	<div *ngIf="fullresult.length && site_result">
+		
+		
+		<ion-grid *ngIf="fullresult.length > 0 && !fullresult['error']">
+			<ion-row>
+				<ion-col col-12 col-md-6 *ngFor="let result of fullresult">
+					<ion-card class="question_card">
+						<p class="marks">{{result.value.marks}}/{{result.value.max_marks}}</p>
+						<ion-card-title>
+							<ion-row>
+								<ion-col col-10>
+									<p [innerHtml]="result.value.content"></p>
+								</ion-col>
+								<ion-col col-2>
+									
+								</ion-col>
+							</ion-row>
+						</ion-card-title>
+						<ion-card-content>
+							<div [ngClass]="{'correct':(result.value.marks>0), 'incorrect':(result.value.marks==0) }">
+								<ion-label>{{config.get_translation('marked_answer')}}</ion-label>
+								<div [innerHtml]="result.value.marked_answer"></div>
+							</div>
+							<div class="correct_answer">
+								<ion-label>{{config.get_translation('correct_answer')}}</ion-label>
+								 <div [innerHtml]="result.value.correct_answer"></div>
+							</div>
+							<div class="answer_explanation">
+								<ion-label>{{config.get_translation('explanation')}} </ion-label>
+								<div [innerHtml]="result.value.explaination"></div>
+							</div>
+						</ion-card-content>
+					</ion-card>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</div>
+</ion-content>

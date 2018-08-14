@@ -1,0 +1,47 @@
+<ion-header>
+  	<ion-navbar>
+    	<ion-title>{{config.get_translation('update_title')}}</ion-title>
+  	</ion-navbar> 
+</ion-header>
+<ion-content padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingText="{{config.get_translation('pull_to_refresh')}}"
+      pullingIcon="arrow-dropdown"
+      refreshingSpinner="circles"
+      refreshingText="{{config.get_translation('refreshing')}}"></ion-refresher-content>
+  </ion-refresher>
+  
+	<ion-list *ngIf="updatesService.updates.length">
+      <ion-list-header *ngIf="updatesService.updates.length > updatesService.readupdates.length">
+        {{config.get_translation('unread_notifications')}}
+      </ion-list-header>
+      <div *ngFor="let update of updatesService.updates | orderBy: 'time':true">
+  		<ion-item-sliding *ngIf="!updatesService.isRead(update)">
+    		<ion-item>
+      			<span><friendlytime [time]="gettimediff(update.time)"></friendlytime></span>
+				<div [innerHtml]="update.content"></div>
+    		</ion-item>
+    		<ion-item-options side="right">
+    			<button ion-button (click)="updatesService.markRead(update)">{{config.get_translation('update_read')}}</button>
+    		</ion-item-options>
+  		</ion-item-sliding>
+      </div>
+      <ion-list-header>
+        {{config.get_translation('read_notifications')}}
+      </ion-list-header>
+
+      <div *ngFor="let update of updatesService.readupdates | orderBy: 'time':true">
+      <ion-item-sliding>
+        <ion-item>
+            <span><friendlytime [time]="gettimediff(update.time)"></friendlytime></span>
+        <div [innerHtml]="update.content"></div>
+        </ion-item>
+        <ion-item-options side="right">
+            <button ion-button (click)="updatesService.markUnread(update)">{{config.get_translation('update_unread')}}</button>
+        </ion-item-options>
+      </ion-item-sliding>
+      </div>
+	</ion-list>
+	<div *ngIf="!updatesService.updates.length" class="message" [innerHtml]="config.get_translation('no_updates')"></div>
+	
+</ion-content>

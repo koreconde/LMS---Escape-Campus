@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-navbar  color="transparent">
+        <ion-buttons start>
+            <button ion-button menuToggle>
+                <ion-icon name="md-menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>{{post.title}}</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content elastic-header fixedscrollheader>
+    <div id="featured">
+        <lazy-img [inputSrc]="post.featured_image"></lazy-img> 
+    </div>
+    <div padding>
+        <p [innerHtml]="post.date"></p>
+		<h1 [innerHtml]="post.title"></h1>
+		<div [innerHtml]="post.content"></div>
+        <ion-item>
+            <ion-avatar item-start>
+              <lazy-img [inputSrc]="post.author.avatar"></lazy-img>
+            </ion-avatar> 
+            <h2 [innerHtml]="post.author.name"></h2>
+            <p [innerHtml]="post.date"></p>
+        </ion-item>
+	</div>
+</ion-content>

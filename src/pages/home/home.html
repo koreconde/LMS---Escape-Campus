@@ -1,17 +1,69 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
+    <ion-navbar  color="transparent" >
+        <ion-buttons start>
+            <button ion-button menuToggle>
+                <ion-icon name="md-menu"></ion-icon>
+            </button>
+        </ion-buttons> 
+        <ion-title>{{config.get_translation('home_title')}}<span [innerHtml]="config.get_translation('home_subtitle')"></span></ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="openSearch()">
+                <ion-icon name="md-search"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-buttons end>
+            <button ion-button [navPush]="profilePage">
+                <ion-icon name="md-contact" *ngIf="!config.isLoggedIn"></ion-icon>
+                <img *ngIf="config.isLoggedIn" [src]="config.user?.avatar">
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 </ion-header>
-
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<ion-content elastic-header fixedscrollheader>
+    <div id="featured" *ngIf="featured && featured.length && config.homePage.featuredCourseSlider">
+        <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" spaceBetween="0">
+            <ion-slide *ngFor="let course of featured">
+                 <lazy-img [inputSrc]="course.featured_image" [navPush]="coursePage" [navParams]="course">2</lazy-img>
+                <span [innerHtml]="course.name"></span>
+            </ion-slide>
+        </ion-slides>
+    </div>
+    <div id="homecontent" padding>
+        <div *ngIf="categories.length && config.homePage.categories">
+        <h3 class="heading"><a [navPush]="categoryPage"><ion-icon ios="ios-more" md="md-more"></ion-icon></a><span>{{config.get_translation('categories_title_home_page')}}</span><span>{{config.get_translation('categories_subtitle_home_page')}}</span></h3>
+        <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" id="categories" spaceBetween="0" slidesPerView="3">
+            <ion-slide *ngFor="let category of categories">
+                <ion-card [navPush]="categoryPage" [navParams]="category">
+                    <div class="featured_category_block">
+                        <lazy-img [inputSrc]="category.image"></lazy-img>
+                        <div class="category-content">
+                            <div class="category-title">{{category.name}}</div>
+                            <div class="category-subtitle">{{category.count}} {{config.get_translation('courses')}}</div>
+                        </div>
+                    </div>
+                  </ion-card>
+            </ion-slide>
+        </ion-slides>
+        </div>
+        <div *ngIf="popular.length && config.homePage.popular">
+            <h3 class="heading"><a [navPush]="categoryPage" [navParams]="{sortby:'popular'}"> <ion-icon ios="ios-more" md="md-more"></ion-icon></a><span>{{config.get_translation('popular_courses_title_home_page')}}</span><span>{{config.get_translation('popular_courses_subtitle_home_page')}}</span></h3>
+            <div id="popular_courses">
+                <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" spaceBetween="0" slidesPerView="2" >
+                    <ion-slide *ngFor="let lcourse of popular">
+                        <coursecard [course]="lcourse"></coursecard>
+                    </ion-slide>
+                </ion-slides>
+            </div>
+        </div>
+        <div *ngIf="featured.length && config.homePage.featured">
+            <h3 class="heading"><span>{{config.get_translation('featured_courses')}}</span><span>{{config.get_translation('selected_courses')}}</span></h3>
+            <div id="popular_courses">
+                <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" spaceBetween="0" slidesPerView="2" >
+                    <ion-slide *ngFor="let lcourse of featured">
+                        <coursecard [course]="lcourse"></coursecard>
+                    </ion-slide>
+                </ion-slides>
+            </div>
+        </div>
+    </div>        
 </ion-content>

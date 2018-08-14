@@ -1,0 +1,388 @@
+page-register {
+	ion-slides[slidesperview="4"] ion-slide{
+	max-width:none;
+	}
+	button.button-menutoggle{
+		background:none !important;
+	}
+	.label-md[floating]{
+	    color:#fff !important;
+	}
+	ion-item{
+		position:relative;
+		&.ng-invalid.ng-touched{
+			&:after{
+		    	content:"\f103";
+		    	font-family:"IonIcons";
+		    	font-size:30px;
+		    	position:absolute;
+		    	right:0;
+		    	bottom:15px;
+			}
+	    }
+	}
+	.profile_chart{
+	    border: 1px solid #eee;
+	    margin: 30px 0;
+	    padding: 0 10px 10px;
+	}
+	#profilecontent{
+		position:relative;
+		ion-refresher{
+			position:absolute;
+			top:30px !important;
+			div{
+				opacity:0.6;
+				font-size:1.2rem;
+				font-weight:600;
+				letter-spacing:1px;
+			}
+		}
+	}
+	#profiletabs{
+		.swiper-wrapper{
+			padding-bottom:10px;
+		}
+		.profile_tab{
+		    font-size: 2rem;
+	        margin: -1px;
+		    padding: 10px 8px;
+		    color: #fff;
+		    background:map-get($colors, primary);
+			span{
+			    display: block;
+			    font-size: 1rem;white-space:nowrap;
+			    text-transform: uppercase;
+			}
+		}
+		
+		.swiper-slide.swiper-slide-active .profile_tab{
+			position:relative;
+			&:after{
+				content:'';
+			    display:block;
+			    position:absolute;
+			    left:50%;bottom:-20px;
+			    margin-left: -10px;
+			    border:10px solid; 
+			    border-color:map-get($colors, primary) transparent transparent;
+			}
+		}
+	}
+	ion-content.non-loggedin{
+	    background: linear-gradient(57deg, #334d5c, #45b29d,#efc94c, #e27a3f, #df5a49);
+	  	background-size: 1000% 100%;
+	  	-webkit-animation: ani 50s ease infinite;
+	  	-moz-animation: ani 50s ease infinite;
+	  	animation: ani 50s ease infinite;
+	  	.scroll-content{
+	  		text-align:center;
+	  	}
+	}
+	ion-header.loggedin{
+		ion-buttons{
+			position: absolute;
+		}
+		.toolbar-title{
+			padding:0;
+		}
+	}
+	ion-content.loggedin{
+		background:#fff;
+	}
+	ion-header{
+		.button[icon-only]{background:none;}
+	}
+	ion-title{
+		h1{
+			color:#fff !important;
+		}
+
+	}
+	
+	h3.heading{
+		text-align:start;
+		font-size:1.2rem;
+		opacity:0.4 !important;
+		margin:15px 0 !important;
+		padding:0;
+	}
+	.signin_content{
+		color:#fff;
+	  	.scroll-content{
+	  		text-align:center;
+	  	}
+	  	
+		.item-block{
+			padding-left:0 !important;
+			background:none !important;
+			border:none !important; color:#fff;
+			text-transform:uppercase;
+			font-size:1.4rem;line-height:2rem;
+			font-weight:600;letter-spacing:1px;
+			.ion-item{
+				border-bottom:2px solid #fff !important;
+			}
+		}
+
+		.button-outline{
+			font-size:1.6rem;
+			line-height:2rem;
+			font-weight:600;
+			letter-spacing:1px;
+			text-transform:uppercase;
+			border:2px solid;
+		}
+
+		#facebook_login{
+			background:#3b5998;
+			border-radius:5px;
+			.icon{    position: absolute;left: 15px;}
+		}
+		#google_login{
+			background:#dd4b39;
+			border-radius:5px;
+			.icon{    position: absolute;left: 15px;}
+		}
+	}
+	.objects{
+		.certificate{
+			max-height:64px;
+		    margin: 2px 0;
+			box-shadow:0 1px 2px rgba(0,0,0,0.2);
+			ion-icon{
+				font-size:64px;
+				opacity:0.6;
+			}
+			img{
+				border-radius:5px;
+				max-height:64px;
+			}
+		}
+
+		.badge{
+			line-height: 1rem;
+			img{
+				border-radius:50%;
+				margin-bottom:10px;
+			}
+			span{
+
+			    font-size: 1.1rem;
+			    text-transform: uppercase;
+			    font-weight: 600;
+			    opacity: 0.6;
+			}
+		}
+		.annoucenment{
+			text-align:start;
+			font-size: 1.5rem;
+		    padding: 15px;
+    		background: #fafafa;
+    		border: 1px solid #f0f0f0;
+			span{
+				font-size: 1.1rem;
+    			text-transform: uppercase;
+    			font-weight:600;
+    			opacity:0.3;
+    			display:block;
+    			margin-bottom:5px;
+			}
+		}
+	}
+	.user_intro{
+		background: map-get($colors, primary);
+	  	text-align:center;
+	  	.avatar{
+	  		position:relative;
+	  		margin:0 auto;
+	  		display:block;
+	  		height:30vh;
+	  		lazy-img{
+	  			div{
+	  				height:100%;
+	  				img{
+				  		border-radius:50%;
+					    width: auto;
+					    height: 100%;
+					    padding: 20px;
+				  	}
+	  			}
+	  		}
+	  	}
+	  	h1{
+	  		color:#fff;
+	  		text-transform:uppercase;
+	  		font-size:16px;
+	  		margin:0;
+	  		padding:10px 0;
+	  		span{
+	  			text-transform:none;
+	  			display:block;
+	  			font-size:1rem;
+	  			opacity:0.8;
+	  		}
+	  		&+button{
+			    position: fixed;
+    			top: 10px;
+    			right: 0px;
+    			ion-icon{
+    				font-size:2rem;
+    			}
+			}
+	  	}
+	}
+
+	#profilelides{
+		margin-top:41px;
+		& > .swiper-container >.swiper-slide{
+			padding-top:10px;
+		}
+	}
+
+	#profiletabs{
+		.list-header{
+			padding: 0;
+		    border-bottom: 2px solid #eee;
+		    opacity: 0.4;
+		    background:none;
+		    font-weight: 600;
+		    text-align: left;
+		}
+
+		.item{
+			font-size: 1.4rem;
+			padding:0;
+			.item-inner{
+				border-color: #eee;
+				label{
+					text-transform:uppercase;
+				}
+			}
+		}
+	}
+
+	#dashboard{
+		margin:-10px;
+		width:auto;
+		ion-col > div{
+		    padding: 15px 0;
+		    text-transform: uppercase;
+		    text-align: center;
+		    border: 1px solid #ddd;
+		    background: #eee;
+		    strong{font-size: 3rem;}
+		    span{display: block;font-size: 1rem;}
+		}
+	}
+	#mycourses{
+		.card{
+			position:relative;
+			padding-bottom:20px;
+			span.course_user_status{
+				position:absolute;
+				bottom:0;
+				left:0;
+				background:map-get($colors, primary);
+				display:block;
+				width:100%;
+				text-align:center;
+				color:#fff;
+				padding:5px;
+				font-size:1.4rem;
+				text-transform:uppercase;
+				font-weight:600;
+			}
+		}
+	}
+
+	#notifications{
+		span{
+			friendlytime{
+				font-size: 11px;
+			    text-transform: uppercase;
+			    opacity: 0.3;
+			    letter-spacing: 1px;
+			}
+		}
+	}
+	#activity{
+		margin:10px 0;
+		.item{
+		    position:relative;
+		    padding-left:30px !important;
+		    overflow:visible;
+		    &:after{
+			    content:'';
+			    position:absolute;
+			    left:10px;
+			    top:0;
+			    height:100%;
+			    width:2px;
+			    background:#eee;
+			}
+			.item-inner:after{
+			    content:'';
+			    position:absolute;
+			    left:7px;
+			    top:50%;
+			    width:8px;height:8px;
+			    border-radius:50%;
+			    background:#eee;
+			    display:block;
+			}
+			span{
+				font-size:11px;
+				tex-transform:uppercase;
+				opacity:0.2;
+				font-weight:600;
+				letter-spacing:1px;
+			}
+		}
+		.item-block{
+		    border:none !important;
+		}
+	}
+	@-webkit-keyframes ani {
+	    0%{background-position:4% 0%}
+	    50%{background-position:97% 100%}
+	    100%{background-position:4% 0%}
+	}
+	@-moz-keyframes ani {
+	    0%{background-position:4% 0%}
+	    50%{background-position:97% 100%}
+	    100%{background-position:4% 0%}
+	}
+	@keyframes ani { 
+	    0%{background-position:4% 0%}
+	    50%{background-position:97% 100%}
+	    100%{background-position:4% 0%}
+	}
+
+	ion-list{
+		ion-item{
+			background:none !important;
+		}
+	}
+
+
+	.mycourses_filter {
+		
+	}
+}
+
+.split-pane-main .non-loggedin .scroll-content{
+	background:transparent;
+}
+
+@media (min-width:550px){
+	page-profile .user_intro > .avatar{
+		max-width:64px !important;
+		max-height:64px !important;
+	    float: left;
+    	margin: -10px -35% -2px 35%;
+	}
+	.loggedin .scroll-content{
+		margin-top:80px !important;
+	}
+}

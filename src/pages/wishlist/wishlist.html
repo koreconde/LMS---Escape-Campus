@@ -1,0 +1,23 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{config.get_translation('wishlist_title')}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+	<div *ngIf="wishlistService.wishlist.length">
+		<ion-grid>
+			<ion-row>
+				<ion-col col-12 col-sm-6 col-md-4 col-lg-3 *ngFor="let lcourse of wishlistService.wishlist">
+					<ion-card>
+			            <courseblock [course]="lcourse"></courseblock>
+			    	</ion-card> 
+		    	</ion-col>
+	    	</ion-row>
+    	</ion-grid>
+	</div>
+	<div class="message" *ngIf="!wishlistService.wishlist.length" [innerHtml]="config.get_translation('no_wishlist')"></div>
+</ion-content>

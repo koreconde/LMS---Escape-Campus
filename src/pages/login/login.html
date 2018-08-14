@@ -1,0 +1,36 @@
+<ion-header center class="{{user ? 'loggedin': 'non-loggedin'}}">
+	<ion-buttons start>
+        <button ion-button menuToggle>
+            <ion-icon name="md-menu"></ion-icon>
+        </button>
+    </ion-buttons>
+    <ion-title *ngIf="!isLoggedIn"><h1>{{config.get_translation('login_heading')}}</h1></ion-title>
+   
+</ion-header>
+<ion-content class="{{isLoggedIn ? 'loggedin': 'non-loggedin'}}">
+	<div class="signin_register" *ngIf="!isLoggedIn">
+		<div class="signin_content" padding>
+			
+			<div id="signin" center>
+				<form [formGroup]="signinForm" (ngSubmit)="onSignIn()">
+					<ion-list>
+						<ion-item>
+							<ion-label floating [innerHtml]="config.get_translation('signin_username')"></ion-label>
+							<ion-input type="text" formControlName="username"></ion-input>
+						</ion-item>
+						<ion-item>
+							<ion-label floating [innerHtml]="config.get_translation('signup_password')"></ion-label>
+							<ion-input type="password" formControlName="password"></ion-input>
+						</ion-item>
+					</ion-list>
+					<button ion-button block outline type="submit" color="white" [innerHtml]="config.get_translation('login_signin')"></button>
+					
+				</form>
+				<button ion-button clear center icon-left color="white" (click)="backToLogin()" [innerHtml]="config.get_translation('login_back')"><ion-icon name="md-arrow-back"></ion-icon></button>
+			</div>
+			
+		</div>
+	</div>
+	
+
+</ion-content>

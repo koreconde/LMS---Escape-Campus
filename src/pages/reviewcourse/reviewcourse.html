@@ -1,0 +1,38 @@
+<ion-header center>
+    <ion-buttons start>
+        <button ion-button icon-only color="white" (click)="onClose()">
+            <ion-icon name="md-arrow-back"></ion-icon>
+        </button>
+    </ion-buttons>
+     <ion-title>{{course.name}}<span [innerHtml]="course.instructor.name"></span></ion-title>
+</ion-header>
+
+<ion-content padding>
+    <h3 class="heading">
+    	<span [innerHtml]="config.get_translation('post_review')"></span>
+    	<span>{{course.name}} - {{course.instructor.name}}</span>
+	</h3>
+	<form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+		<ion-list>
+			<ion-item>
+				<ion-label floating>{{config.get_translation('review_title')}}</ion-label>
+				<ion-input type="text" formControlName="title"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label floating>{{config.get_translation('review_rating')}}</ion-label>
+	    		<ion-select formControlName="rating" okText="{{config.get_translation('ok')}}" cancelText="{{config.get_translation('cancel')}}">
+				    <ion-option value="1">{{config.get_translation('rating1star')}}</ion-option>
+				    <ion-option value="2">{{config.get_translation('rating2star')}}</ion-option>
+				    <ion-option value="3">{{config.get_translation('rating3star')}}</ion-option>
+				    <ion-option value="4">{{config.get_translation('rating4star')}}</ion-option>
+				    <ion-option value="5">{{config.get_translation('rating5star')}}</ion-option>
+			  	</ion-select>
+			</ion-item>
+			<ion-item>
+	    		<ion-textarea formControlName="review" [placeholder]="config.get_translation('review_content')"></ion-textarea>
+			</ion-item>
+		</ion-list>
+		<button type="submit" ion-button block [innerHtml]="config.get_translation('submit_review')"></button>
+		<div class="message" *ngIf="message.length" [innerHtml]="message"></div>	
+	</form>
+</ion-content>

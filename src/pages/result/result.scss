@@ -1,0 +1,80 @@
+page-result {
+	ion-header{
+		background:#f6f6f6;
+	}
+	ion-card-content{
+		position:relative;
+		.marks{
+			position: absolute; 
+			right: 0; 
+			top: 0; 
+			padding: 10px; 
+			background: rgba(0,0,0,0.2);
+		}
+		ion-label{
+			font-size: 11px;
+	    	text-transform: uppercase;
+	    	opacity: 0.3;
+	    	font-weight: 600;
+	    	letter-spacing: 1px;
+		}
+	}
+	.question_card{
+		padding:15px;
+		.marks{
+
+			font-size:2rem;
+			position: absolute;
+		    top: 15px;
+			right: 15px;
+		    padding: 10px;
+			background: rgba(0, 0, 0, 0.2);
+		}
+
+		.correct,.incorrect,.correct_answer,.answer_explanation{
+		    background: #FFEAC8;
+		    position:relative;
+		    padding: 5px 15px;
+		    margin: 0 -10px 10px;
+		    border-radius: 5px;
+		}
+
+		.correct{
+			background:#7ce9c5;
+			&:after {
+			    content: "\f2bc";
+			    font-family: Ionicons;
+			    color: #fff;
+			    font-size: 3rem;
+			    position: absolute;
+			    top: 5px;
+			    right: 15px;
+			}
+		}
+		.incorrect{
+			background:#ff9d7e;
+			&:after {
+			    content: "\f2c0";
+			    font-family: Ionicons;
+			    color: #fff;
+			    font-size: 3rem;
+			    position: absolute;
+			    top: 5px;
+			    right: 15px;
+			}
+		}
+		.answer_explanation{
+			background:#f6f6f6;
+		}
+	}
+}
+
+@media (max-width:551px){
+	.question_card{
+		margin: 0 -15px;
+    	width: calc(100% + 30px);
+    	.marks{
+    		right:0;
+    	}
+	}
+}

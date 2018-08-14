@@ -1,0 +1,27 @@
+page-instructors {
+	ion-content{
+		background:map-get($colors, primary) !important;
+		ion-searchbar{
+		    border: none !important;
+    		background: none !important;
+		}
+
+		.instructor{
+			position: relative;
+			.instructor_details{
+				position: absolute;
+			    bottom: 0;
+			    width: 100%;
+			    color: #fff;
+			    padding:15px 15px 0;
+			    background: rgba(0,0,0,0.3);
+			    h3{
+			    	margin:0 10px 5px;
+			    	color:#fff;
+			    	font-size:2rem;font-weight:600;
+			    }
+			    star-rating .star-rating{font-size:1rem;}
+			}
+		}
+	}
+}

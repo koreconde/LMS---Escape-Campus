@@ -1,0 +1,56 @@
+<ion-header center>
+     <ion-navbar  color="transparent" >
+        <ion-buttons start>
+            <button ion-button icon-only color="white" (click)="onClose()">
+                <ion-icon name="md-arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>{{config.get_translation('search_title')}}<span>&nbsp;</span></ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    
+	<ion-searchbar [(ngModel)]="searchTerm" [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
+    <div *ngIf="searching" class="spinner-container">
+        <ion-spinner></ion-spinner>
+    </div>
+    <div *ngIf="!courseitems?.length && !items?.length && !users?.length">
+        <div class="message" [innerHtml]="config.get_translation('no_results')"></div>
+    </div>
+    <ion-list *ngIf="courseitems?.length">
+        <ion-item *ngFor="let item of courseitems">
+            <ion-thumbnail item-start *ngIf="item.featured_image">
+                <lazy-img [inputSrc]="item.featured_image"></lazy-img>
+            </ion-thumbnail>
+            <h2>{{item.name}}</h2>
+            <div *ngIf="item.total_students">
+                <p>Hayao Miyazaki • 1988</p>
+                <button ion-button clear item-end>View</button>
+            </div>
+        </ion-item>
+    </ion-list>
+    <ion-list *ngIf="items?.length">
+        <ion-item *ngFor="let item of items">
+            <ion-thumbnail item-start *ngIf="item.featured_image">
+                <lazy-img [inputSrc]="item.featured_image"></lazy-img>
+            </ion-thumbnail>
+            <h2>{{item.name}}</h2>
+            <div *ngIf="item.total_students">
+                <p>Hayao Miyazaki • 1988</p>
+                <button ion-button clear item-end>View</button>
+            </div>
+        </ion-item>
+    </ion-list>
+    <ion-list *ngIf="users?.length">
+        <ion-item *ngFor="let item of users">
+            <ion-thumbnail item-start *ngIf="item.avatar">
+                <lazy-img [inputSrc]="item.avatar"></lazy-img>
+            </ion-thumbnail>
+            <h2>{{item.name}}</h2>
+            <div *ngIf="item.total_students">
+                <p>Hayao Miyazaki • 1988</p>
+                <button ion-button clear item-end>View</button>
+            </div>
+        </ion-item>
+    </ion-list>
+</ion-content>

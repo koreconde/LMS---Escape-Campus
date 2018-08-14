@@ -1,1 +1,18 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<!-- <ion-split-pane when="lg"> -->
+	<ion-menu id="mainmenu" [content]="nav" *ngIf=pages.length>
+		<ion-content>
+			<div id="logo">
+				<img src="assets/images/main_logo.png" />
+			</div>
+			<ion-list>
+				<button ion-item *ngFor="let p of pages" (click)="onLoad(p)">
+					<div class="menuitem">
+						<strong [innerHtml]="p.title"></strong>
+					</div>
+				</button>
+			</ion-list>
+		</ion-content>
+	</ion-menu>
+
+<ion-nav [root]="tabsPage" #nav swipe-back-enabled="false" main></ion-nav>
+<!-- </ion-split-pane> -->

@@ -1,0 +1,32 @@
+page-blog {
+	.card{
+		margin: 0 0 3rem;
+		width:100%;
+		box-shadow:none;
+		position:relative;
+	    border-radius: 5px;
+	    lazy-img{
+	    	min-height: 72px;
+	    	.placeholder{
+	    		background:#fff;
+	    	}
+	    }
+		img{
+			border-radius:5px;
+		}
+		lazy-img+ion-item{
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    z-index: 9;
+		    background: none;
+		    background: rgba(0,0,0,0.3);
+		    h2,p{
+		    	color:#fff;
+		    }
+		    ion-avatar{
+	    	    height: 40px;
+		    }
+		}
+	}
+}

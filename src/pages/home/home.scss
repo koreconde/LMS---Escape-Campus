@@ -1,3 +1,66 @@
 page-home {
+	.scroll-content{margin-top:0 !important;}
 
+	
+	
+	#loading{
+		position:fixed;
+		top:0;left:0;z-index:9999;
+		width:100vw;height:100vh;
+		display:block;
+		background:#313b3d;
+		h2{
+			color:#fff;
+			transition:all 200ms ease-in;
+		}
+	}
+	ion-slides{
+		height:auto;
+	    margin: 0 -12px;
+    	width: calc(100% + 24px);
+		&#featured{
+			z-index:1;
+			position:relative;
+			.swiper-container{
+				padding:10px;
+			}
+		}
+	}
+	.swiper-container{
+		height:auto;
+		padding-bottom:30px;
+	}
+	#featured{
+		img{
+		    width: 100%;
+		    object-fit: cover;
+		    height: 30vh;
+		    min-height: 320px;
+		}
+		span{
+		    position: absolute;
+		    bottom: 0;
+		    left: 0;
+		    z-index:9;
+		    width: 100%;
+		    background: rgba(0,0,0,0.2);
+		    padding: 5px 20px;
+		    text-align: start;
+		    color: #fff;
+		    text-transform: uppercase;
+		    font-size: 11px;
+		    letter-spacing: 1px;
+		}
+		.swiper-container{
+			padding-bottom:0;
+		}
+	}
+	#homecontent{
+		z-index:9;position:relative;
+		background: #f6f6f6;
+	}
+	
+	#popular_courses{
+		
+	} 
 }

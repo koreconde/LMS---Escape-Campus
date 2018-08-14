@@ -1,0 +1,109 @@
+<div class="marks"><span [innerHtml]="question.marks"></span>{{config.get_translation('marks')}}</div>
+
+<div class="question_content" *ngIf="question.type != 'match' && question.type != 'select' && question.type != 'fillblank'" [innerHtml]="question.content"></div>
+
+<div class="question_content" *ngIf="question.type == 'match'">
+	<div [innerHtml]="question.content.statement"></div>
+</div>
+
+<div class="question_content" *ngIf="question.type == 'select'">
+	<div *ngFor="let content of question.content; let i = index">
+		<div [innerHtml]="content"></div>
+		<ion-item><ion-select #ci (ionChange)="trackSelect($event,i)" *ngIf="i < (question.content.length-1)" okText="{{config.get_translation('ok')}}" cancelText="{{config.get_translation('cancel')}}">
+		    <ion-option *ngFor="let option of question.options;let k=index" [value]="k">{{option}}</ion-option>
+		</ion-select></ion-item>
+	</div>
+</div>
+
+<div class="question_content" *ngIf="question.type == 'fillblank'">
+	<div *ngFor="let content of question.content; let i = index">
+		<div [innerHtml]="content"></div>
+		<ion-input type="text"  (keyup)="trackFillBlank($event.target.value,i)" *ngIf="i < (question.content.length-1)"></ion-input>
+	</div>
+</div>
+
+<div [ngClass]="{'quiz_question': true, 'active': ( question.status > 1 || flip ) }" (click)="flipped()">
+	<div class="flipper">
+	<div class="main_question">
+		<div *ngIf="question.type == 'truefalse'" [class]="question.type">
+			<ul class="question_options">
+				<li>
+					<ion-label [ngClass]="{selected: answer == 1, correct: question.status > 1 && question.correct == 1}" [innerHtml]="config.get_translation('true')" (click)="saveOptionAnswer(1)"></ion-label>
+				</li>
+				<li>
+					<ion-label [ngClass]="{selected: answer == 0, correct: question.status > 1 && question.correct == 0}" [innerHtml]="config.get_translation('false')" (click)="saveOptionAnswer(0)"></ion-label>
+				</li>
+			</ul>
+		</div>
+		<div *ngIf="question.type == 'single' || question.type == 'survey'" [class]="question.type">
+			<ul class="question_options">
+				<li *ngFor="let option of question.options; let i = index">
+					<ion-label [ngClass]="{selected:answer == i, correct: question.status > 1 && (question.correct-1) == i, incorrect: question.status > 1 && (question.correct-1) != i && answer == i}" [innerHtml]="option" (click)="saveOptionAnswer(i)"></ion-label>
+				</li>
+			</ul>
+		</div>
+		<div *ngIf="question.type == 'multiple'">
+			<ul class="question_options">
+				<li *ngFor="let option of question.options; let i = index">
+					<ion-label [ngClass]="{selected: checkInAnswer(i), correct: question.status > 1 && checkInCorrect(i), incorrect: question.status > 1 && checkInCorrect(i) == false && checkInAnswer(i)}" [innerHtml]="option" (click)="savemultiOptionAnswer(i)"></ion-label>
+				</li>
+			</ul>
+		</div>
+		<div *ngIf="question.type == 'smalltext'">
+		  	<ion-item>
+		    	<ion-input type="text"></ion-input>
+		  	</ion-item>
+		</div>
+		<div *ngIf="question.type == 'largetext'">
+		  	<ion-item>
+		    	<ion-textarea></ion-textarea>
+		  	</ion-item>
+		</div>
+		<div *ngIf="question.type == 'sort'">
+			<ul class="question_sort" [dragula]='"sortable_question"' [dragulaModel]="sort_options">
+				<li *ngFor="let option of sort_options; let i = index">
+					<ion-label [ngClass]="{selected: checkInAnswer(i), correct: question.status > 1 && checkInCorrectOrder(i), incorrect: question.status > 1 && checkInCorrectOrder(i) == false && checkInAnswer(i)}" [innerHtml]="option" ></ion-label>
+				</li>
+			</ul>
+		</div>
+		<div *ngIf="question.type == 'match'">
+			<ion-grid>
+				<ion-row>
+					<ion-col>
+						<ul class="question_sort_static">
+							<li *ngFor="let match_drop of question.content.match; let i = index">
+								<div [innerHtml]="match_drop"></div>
+							</li>
+						</ul>
+					</ion-col>
+					<ion-col>
+						<ul class="question_sort" [dragula]='"sortable_question"' [dragulaModel]="sort_options">
+							<li *ngFor="let option of sort_options; let i = index">
+								<ion-label [ngClass]="{selected: checkInAnswer(i), correct: question.status > 1 && checkInCorrectOrder(i), incorrect: question.status > 1 && checkInCorrectOrder(i) == false && checkInAnswer(i)}" [innerHtml]="option" ></ion-label>
+							</li>
+						</ul>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</div>
+		<button ion-button block *ngIf="question.status <= 1 && question.auto > 0 && !display" (click)="checkAnswer()" [innerHtml]="config.get_translation('checkanswer')"></button>
+	</div>
+	<div class="question_result" *ngIf="question.status > 1 || display">
+		<div class="result">
+			<div class="correct" *ngIf="question.user_marks == question.marks">
+				<ion-icon name="md-checkmark-circle"></ion-icon>
+			</div>
+			<div class="incorrect" *ngIf="question.user_marks != question.marks">
+				<ion-icon name="md-close-circle"></ion-icon>
+			</div>
+		</div>
+		<div class="correct_answer" [innerHtml]="getAnswer()"></div>
+		<div class="marked_answer">
+			<span  [innerHtml]="config.get_translation('marked_answer')+' : '"></span>
+			<span class="user_answer" [innerHtml]="getUserMarkedAnswer()"></span>
+		</div>
+		<div class="explanation" [innerHtml]="question.explanation"></div>
+	</div>
+	</div>
+</div>
+

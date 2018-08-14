@@ -1,0 +1,135 @@
+question {
+	
+	.quiz_question{
+		perspective: 1000px;
+		transform: rotateY(0deg);
+		&.active .flipper{
+			transform: rotateY(360deg);
+		}
+
+		.flipper{
+			transition: 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+
+			.main_question,.question_result{
+				
+			}
+	        .main_question {
+	            z-index: 2;
+	            transform: rotateY(0deg);
+	        }
+	        .question_result {
+	            //transform: rotateY(360deg);
+	        }
+		}
+	}
+	
+
+	.question_content{
+		text-align:start;
+	}
+	.marks{
+		position: absolute;
+	    right: 0;
+	    top: 0;
+	    font-size: 10px;
+	    width: 48px;
+	    height: 48px;
+	    background: #eee;
+	    padding: 0;
+	    border-radius: 50%;
+	    span{
+    	    display: block;
+		    font-size: 20px;
+		    line-height: 0.5;
+		    padding: 12px 0 0;
+
+	    }
+	}
+
+	.question_options{
+		list-style:none;
+		padding:0;
+		li{
+			padding:0;
+			clear:both;
+			ion-label{
+				text-align:start;
+				padding:10px 15px;
+				border-radius:2px;
+				background:rgba(0,0,0,0.02);
+				&.selected{
+					background: map-get($colors, primary);
+					color:#fff;
+				}
+				&.correct{
+					background: map-get($colors, price);
+					color:#fff;
+				}
+				&.incorrect{
+					background: map-get($colors, danger);
+					color:#fff;
+				}
+			}
+		}
+	}
+
+	.question_result{
+		.correct,.incorrect{
+			font-size:12rem;
+		}
+		.correct{ color:map-get($colors, price);}
+		.incorrect{color:map-get($colors, danger);}
+		.correct_answer{
+			font-size:2rem;
+			font-weight:bold;
+			margin:15px 0;
+		}
+
+		.explanation{
+			padding:15px;
+			border:1px solid rgba(0,0,0,0.02);
+		}
+	}
+
+	.question_sort,
+	.question_sort_static {
+	    padding:0;
+	    text-align:start;
+	    list-style:none;
+		li{
+		    text-align:start;
+		    list-style:none;
+		    padding:4px 10px 4px 30px;background:#eee;
+		    margin:2px 0;border-radius:5px;
+		    position:relative;
+			&:before{
+			    position:absolute;
+			    left:4px;opacity:0.6;
+			    top:16px;font-size:2rem;
+			    content:"\f2cd";
+			    font-family:'ionicons';
+			    transform:rotate(90deg);
+			}
+		}
+	}
+
+	.question_sort_static > li{
+		background:none;
+		padding:14px 10px;
+		margin:2px 0;
+		&:before{content:'';}
+	}
+
+	.drop_zone{
+		padding:15px;
+		display:block;
+		border:2px dashed #eee;
+	}
+
+	ion-input{
+		display:inline;
+		border-bottom:2px solid #eee;
+	}
+}

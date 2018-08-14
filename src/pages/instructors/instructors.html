@@ -1,0 +1,39 @@
+<ion-header>
+    <ion-navbar  color="transparent" >
+        <ion-buttons start>
+            <button ion-button menuToggle>
+                <ion-icon name="md-menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>{{title}}<span>{{subtitle}}</span></ion-title>
+            <ion-buttons end>
+                <button ion-button (click)="openSearch()">
+                    <ion-icon name="md-search"></ion-icon>
+                </button>
+            </ion-buttons>
+            <ion-buttons end>
+                <button ion-button [navPush]="profilePage" [navParams]="userdata">
+                    <ion-icon name="md-contact" *ngIf="!config.isLoggedIn"></ion-icon>
+                    <img *ngIf="config.isLoggedIn" [src]="config.user?.avatar">
+                </button>
+            </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+	
+	<div *ngIf="!instructors.length">
+		<div class="message" [innerHtml]="no_instructors">
+		</div>
+	</div>
+	<ion-grid>
+		<ion-row>
+			<ion-col col-12 col-md-6 col-lg-4 *ngFor="let instructor of instructors" >
+				<instructorblock [instructor]="instructor"></instructorblock>
+			</ion-col>	
+		    <ion-infinite-scroll *ngIf="!noMoreInstructorsAvailable"(ionInfinite)="doInfinite($event)">
+		       <ion-infinite-scroll-content></ion-infinite-scroll-content>
+		    </ion-infinite-scroll>
+	    </ion-row>
+    </ion-grid>
+</ion-content>
+

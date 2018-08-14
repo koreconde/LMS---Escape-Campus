@@ -1,0 +1,61 @@
+courseblock {
+	
+	position:relative;
+	
+	.wishlist{
+		position: absolute;
+	    left: 10px;
+	    top: 10px;
+	    font-size: 2rem;
+	    opacity: 0.5;
+	    z-index:99;
+		&:before{
+			content:"\f307";
+			font-family:"Ionicons";
+			
+		}
+		&.active{
+			opacity:1;
+			&:before{
+				content:"\f308";
+				color:red;
+			}
+		}
+	}
+
+	.course_block{
+		margin-bottom: -1px;
+		.course_featured_image{
+		    overflow: hidden;
+    		margin: -10px;
+    		width: calc(100%+20px);
+		    img{
+			    width: 100%;
+		    }
+		}
+		.card{
+			background:rgba(255,255,255,0.95);
+		}
+		
+		.card-content{
+			float:left;
+			.card-title{
+			    font-size: 1.4rem;
+			    font-weight:600;
+			    margin: 0;
+			    padding: 0;
+			}
+			ion-icon{font-size:1.6rem;}
+			.star-rating{line-height:2rem;}
+			.course_instructor{
+				font-size:1.3rem;
+				opacity:0.6;
+				display:block;
+			}
+			.course_price{
+				color:#70c989;
+				display:block;
+			}
+		}
+	}
+}

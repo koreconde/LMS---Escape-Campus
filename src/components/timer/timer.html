@@ -1,0 +1,20 @@
+<div class="timer">
+	<div class="hours" *ngIf="hours > 0">
+		{{hours}}
+	</div>
+	<div class="minutes" *ngIf="seconds > 0">
+		{{minutes}}
+	</div>
+	<div class="seconds"  *ngIf="seconds > 0">
+		{{seconds}}
+	</div>
+	<div  *ngIf="remaining == 0">
+		{{config.get_translation('timeout')}}
+	</div>
+	<div class="timeremaining">
+		<div class="timer_remaining_bg">
+			<div class="timer_remaining" [ngStyle]="{'width': remaining+'%'}">
+			</div>
+		</div>
+	</div>
+</div>

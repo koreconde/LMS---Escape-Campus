@@ -1,0 +1,48 @@
+<div class="instructor_block">
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12 col-sm-6>
+                <div class="instructor_avatar" [ngStyle]="{ 'background-image':'url('+instructor.avatar+')'}" [navPush]="instructorPage" [navParams]="instructor">
+                    <lazy-img [inputSrc]="instructor.avatar"></lazy-img>
+                </div>
+            </ion-col>
+            <ion-col col-12 col-sm-6 #featured >
+                <ion-card-content class="align-left">
+                    <ion-card-title [navPush]="instructorPage" [navParams]="instructor">
+                        {{instructor.name}}
+                    </ion-card-title>
+                    <span class="instructor_sub" *ngIf="instructor.sub && instructor.sub != 'false'">{{instructor.sub}}</span>
+                    <star-rating [rating]="instructor.average_rating" align-right></star-rating>
+                    <div class="instructor_bio" >
+                    
+                    <div *ngIf="instructor?.bio && instructor?.bio != 'false' && instructor.bio.length > 200">
+                        <div *ngIf="!showFull">
+                            <div [innerHtml]=shortbio></div>
+                            <button (click)="showfullBio(1)" ion-button clear> {{config.get_translation('show_more')}}</button>
+                        </div>
+                        <div *ngIf="showFull">
+                            <div [innerHtml]=instructor.bio></div>
+                            <button (click)="showfullBio(0)" ion-button clear> {{config.get_translation('show_less')}}</button>
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="instructor.bio && instructor.bio != 'false' && instructor.bio.length <= 200" [innerHtml]=instructor.bio></div>
+
+                    </div>
+                    <ion-grid>
+						<ion-row>
+							<ion-col *ngIf="instructor?.student_count">
+								<ion-icon name="md-contacts"></ion-icon>
+								<strong>{{instructor.student_count}}</strong>
+							</ion-col>
+							<ion-col *ngIf="instructor?.course_count">
+								<ion-icon name="md-book"></ion-icon>
+								<strong>{{instructor.course_count}}</strong>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+                </ion-card-content>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>

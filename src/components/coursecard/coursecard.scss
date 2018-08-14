@@ -1,0 +1,51 @@
+coursecard {
+	
+	position:relative;
+	display:inline-block;
+	width:100%;
+	.wishlist{
+		position: absolute;
+	    left: 20px;
+	    top: 20px;
+	    font-size: 2rem;
+	    opacity: 0.5;
+	    z-index:99;
+		&:before{
+			content:"\f307";
+			font-family:"Ionicons";
+			
+		}
+		&.active{
+			opacity:1;
+			&:before{
+				content:"\f308";
+				color:red;
+			}
+		}
+	}
+
+	.featured_course_block{
+		.featured_course_image{
+			max-height:200px;
+			overflow:hidden;
+		}
+		.card-content{
+			padding:10px 12px 11px 12px;
+			height: 130px;position:relative;
+		}
+		.star-rating,
+		.card-title{
+			font-size:1.6rem;
+			margin-top:0;padding-top:0;
+			font-weight:600;
+		}
+		.course_price{
+			margin-top:0;padding-top:0;
+			color:#70c989;
+			font-size:1.4rem;    
+			position: absolute;
+	    	left: 12px;
+	    	bottom: 11px;
+		}
+	}
+}

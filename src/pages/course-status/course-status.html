@@ -1,0 +1,217 @@
+<ion-header>
+    <ion-navbar  color="transparent" >
+        <ion-buttons start>
+            <button ion-button menuToggle>
+                <ion-icon name="md-menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>
+            {{course.name}}
+            <span>
+                {{course.instructor.name}}
+            </span> 
+        </ion-title>
+            <ion-buttons end>
+                <button ion-button (click)="openSearch()">
+                    <ion-icon name="md-search"></ion-icon>
+                </button>
+            </ion-buttons>
+            <ion-buttons end>
+                <button ion-button [navPush]="profilePage" [navParams]="userdata">
+                    <ion-icon name="md-contact" *ngIf="!user"></ion-icon>
+                    <img *ngIf="user" [src]="user?.avatar">
+                </button>
+            </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div id="toggleTimeline">
+        <button (click)="toggleTimeline()" class="main" icon-only fab fab-floating ion-fab color="orange" absolute-drag startLeft="40" startTop="200">
+            <ion-icon name="md-menu"></ion-icon>
+        </button>
+    </div>
+    <div id="toggleExtras">
+        <button ion-button icon-only class="quiz_button" *ngIf="showQuizStart()" (click)="triggerQuizStart()">
+            <ion-icon name="md-play"></ion-icon> 
+        </button>
+
+        <div *ngIf="showQuizControls()">
+            <button class="quiz_button" ion-button icon-only (click)="triggerQuizSave()">
+                <ion-icon *ngIf="!saving" name="md-cloud-done"></ion-icon>
+                <ion-spinner *ngIf="saving" name="lines" class="spinner-calm"></ion-spinner>
+            </button>
+            <button class="quiz_button" ion-button icon-only *ngIf="quizSaved()" (click)="triggerQuizSubmit()">
+                <ion-icon name="md-done-all"></ion-icon>
+            </button>
+        </div>
+    </div>
+    <div id="course_timeline" [ngClass]="{active: timelineactive > 0}">
+        <progress-bar *ngIf="coursestatus.progress && coursestatus.progress > -1" [progress]="coursestatus.progress"></progress-bar>
+        <div id="curriculum_timeline">
+            <ion-list>
+                <ion-item *ngFor="let item of coursestatus.courseitems; let i=index;" (click)="selectedItem(i)" [class]="item.type">
+                    <strong><strong [innerHtml]=item.title></strong>
+                        <span [ngClass]="{ 'active': (coursestatus.current_unit_key === i), 'done': (item.status > 0) }"></span>
+                    </strong>
+                </ion-item>
+            </ion-list>
+        </div> 
+        <div id="course_buttons">
+            <button ion-button outline full color="white" (click)="backToCourse()">{{config.get_translation('back_to_course')}}</button>
+            <button ion-button outline full color="white" (click)="reviewCourse()">{{config.get_translation('review_course')}}</button>
+            <button ion-button outline full color="white" *ngIf="coursestatus.status < 3" (click)="finishCourse()">{{config.get_translation('finish_course')}}</button>
+        </div>
+    </div>
+
+    <div id="course_status_content">
+        <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" id="course_status_items" #CourseStatusItems (ionSlideDidChange)="onSlideChanged()" autoHeight>
+            <ion-slide *ngFor="let item of coursestatus.courseitems; let i=index;">
+                <h3 class="heading">
+                    <span [innerHtml]="item.title"></span>
+                    <friendlytime [time]="item.duration" *ngIf="item.type == 'unit'"></friendlytime>
+                    <friendlytime [time]=getsectionduration(i) *ngIf="item.type == 'section'"></friendlytime>
+                    <span class="section_heading" [innerHtml]="getsection(i)" *ngIf="item.type != 'section'"></span>
+                    <span  *ngIf="(item.type == 'unit') && (item.status > 0)" class="complete">{{config.get_translation('completed')}}</span>
+                    <ion-grid *ngIf="(item.type == 'quiz')">
+                        <ion-row>
+                            <ion-col>
+                                <div class="user_progress">
+                                    <p>{{config.get_translation('progress')}}</p>
+                                    <progress-bar [progress]="item.meta.progress"></progress-bar>
+                                </div> 
+                            </ion-col>
+                            <ion-col>
+                                <div class="user_marks">
+                                    <p>{{config.get_translation('score')}}</p>
+                                    <span *ngIf="item.meta.status > 3">{{item.meta.marks}}</span> / <strong>{{item.meta.max}}</strong> 
+                                </div>
+                            </ion-col>
+                            <ion-col *ngIf="item.meta.status < 3">
+                                <div class="user_timer">
+                                    <p>{{config.get_translation('time')}}</p>
+                                    <timer [time]="item.duration" [quiz]="item.id" *ngIf="item.duration < 9999" [start]="quizService.checkQuizStarted(item.id)" 
+                                    (QuizEnded)="endQuiz($event)"></timer>
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </h3>
+
+                <div *ngIf="config.settings.units_in_inappbrowser && item.type == 'unit' && item.meta.link && item.meta.link.length">
+                    <button ion-button (click)="openIabunit(item.meta.link)" [innerHtml]="config.get_translation('open_in_new_window')"></button>
+                </div>
+
+                <div *ngIf="item.type == 'unit' && item.meta.video">
+                    
+                    <vg-player (onPlayerReady)="onPlayerReady($event)" *ngFor="let video of item.meta.video" vg-responsive="true">
+                        <vg-controls [vgFor]="my-video" [vgAutohide]="true" [vgAutohideTime]="5">
+
+                            <vg-play-pause [vgFor]="my-video"></vg-play-pause>
+                            <vg-playback-button></vg-playback-button>
+
+                            <vg-time-display [vgFor]="my-video" vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+                            <vg-scrub-bar [vgFor]="my-video">
+                                <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                            </vg-scrub-bar>
+                            <vg-volume [vgFor]="my-video"></vg-volume>
+                            <vg-fullscreen></vg-fullscreen>
+                            <vg-overlay-play></vg-overlay-play>
+                        </vg-controls>
+                        <video #myMedia
+                               [vgMedia]="myMedia"
+                               id="my-video"
+                               [src]="video"
+                               type="video/mp4">
+                        </video>
+                    </vg-player>
+                </div> 
+
+                <div *ngIf="item.type == 'unit' && item.meta.audio" class="audio-container">
+                    
+                <vg-player style="height: 50px;" (onPlayerReady)="onPlayerReady($event)" *ngFor="let audio of item.meta.audio" vg-responsive="true">
+                        <vg-controls [vgAutohide]="false">
+                            <vg-play-pause></vg-play-pause>
+                            <vg-playback-button></vg-playback-button>
+
+                            <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+
+                            <vg-scrub-bar>
+                                <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                            </vg-scrub-bar>
+
+                            <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+
+                            <vg-mute></vg-mute>
+
+                        </vg-controls>
+
+                        <audio #media [vgMedia]="media" id="myAudio" preload="auto">
+                            <source [src]="audio" type="audio/mp3">
+                        </audio>
+                    </vg-player>
+
+                   
+                </div> 
+
+                <div *ngIf="item.type == 'unit' && item.meta.iframes && item.meta.iframes.length">
+                    <div class="course_item_iframe" *ngFor="let iframeUrl of item.meta.iframes">
+                        <iframe width="100%" height="100%" [src]="iframeUrl | safeUrl" frameborder="0" allowfullscreen></iframe>
+                        <button ion-button (click)="openIab(iframeUrl)" [innerHtml]="config.get_translation('open_in_new_window')"></button>
+                    </div>
+                </div>
+
+
+                <div id="maincontent" class="pinchzoom" *ngIf="item.type == 'unit'" [innerHtml]="item.content | safeHtml" padding></div>
+                <div *ngIf="!item.meta.access && item.type == 'unit'">
+                    <button ion-button icon-only clear (click)="forceReload()"><ion-icon name="md-refresh"></ion-icon></button>
+                </div>
+                <div id="maincontent" *ngIf="item.type == 'section'" padding>
+                    <ul class="sectionunits">
+                        <li *ngFor="let sectionitem of coursestatus.courseitems;let key=index;" (click)="selectedItem(key)">
+                            <div *ngIf="key > i && sectionitem.type != 'section' && in_section(key,i)" [ngClass]="{active:sectionitem.status > 0}">
+                                <span [innerHtml]="sectionitem.title"></span>
+                                <friendlytime [time]="sectionitem.duration"></friendlytime>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="maincontent" *ngIf="item.type == 'quiz'" padding>
+                    
+                    <div *ngIf="item.meta.status <= 1 " [innerHtml]="item.content"></div>
+                    
+                    <div *ngIf="item.meta.status > 1 && item.meta.status < 3">
+                        <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" id="quiz_questions" #QuizQuestions (ionSlideDidChange)="onQuestionSlide()" autoHeight pager paginationType="progress">
+                            <ion-slide *ngFor="let question of item.meta.questions;let q=index;">
+                                <div class="quiz_question {{question.status}}">
+                                    <question [question]="question" [display]="0" (answerChecked)="QuestionChecked($event,q)"
+                                    (markedQuestion)="increaseProgress($event,q)"> </question>
+                                </div>
+                            </ion-slide> 
+                        </ion-slides>
+                    </div>
+
+                    <div *ngIf="item.meta.status == 3">
+                        <h3 [innerHtml]="config.get_translation('awaiting_results')"></h3>
+                        <div [innerHtml]="item.meta.completion_message"></div>
+                    </div>
+                    <div *ngIf="item.meta.status > 3">
+                        <h3 [innerHtml]="config.get_translation('quiz_results')"></h3>
+                        <div *ngIf="item.meta.auto">
+                            <ion-card *ngFor="let question of item.meta.questions">
+                                <question [question]="question" [display]="1"></question>
+                            </ion-card>
+                        </div>
+                        <div *ngIf="item.meta.retakes > 0 && !showQuizStart()">
+                            <button ion-button class="retake_quiz" (click)="retakeQuiz()" [innerHtml]="
+                            config.get_translation('retake_quiz') + 
+                            '<span> ( ' +item.meta.retakes+' '+config.get_translation('retakes_remaining')+')</span>'
+                            " ></button>
+                        </div>
+                    </div>
+                </div>
+            </ion-slide>
+        </ion-slides>
+    </div>
+</ion-content>

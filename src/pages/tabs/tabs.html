@@ -1,5 +1,16 @@
-<ion-tabs>
-  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>
+<ion-tabs color="white" *ngIf="config.isLoggedIn" [selectedIndex]="myIndex">
+  <ion-tab [root]="home" tabIcon="md-home"></ion-tab>
+  <ion-tab [root]="directoryPage" tabIcon="md-list"></ion-tab> 
+  <ion-tab [root]="profileTab" tabIcon="md-contact" [rootParams]="userdata"></ion-tab>
+  <ion-tab [root]="courseStatus" [rootParams]="config.lastCourse"  *ngIf="config.lastCourse && config.settings.access_token" tabIcon="md-play"></ion-tab>
+  <ion-tab [root]="updates" tabIcon="md-notifications-outline" [tabBadge]="config.unread_notifications_count>0?config.unread_notifications_count:null"></ion-tab>
+  <ion-tab [root]="wishlist" tabIcon="md-heart-outline"></ion-tab>
+  <ion-tab [root]="wallet" tabIcon="ios-card" *ngIf="config.settings.wallet"></ion-tab>
+</ion-tabs>
+<ion-tabs color="white" *ngIf="!config.isLoggedIn" [selectedIndex]="myIndex">
+    <ion-tab [root]="home" tabIcon="md-home"></ion-tab>
+    <ion-tab [root]="directoryPage" tabIcon="md-list"></ion-tab>
+  	<ion-tab [root]="profileTab" tabIcon="md-contact"></ion-tab>
+  	<ion-tab [root]="updates" tabIcon="md-notifications-outline" [tabBadge]="config.unread_notifications_count>0?config.unread_notifications_count:null"></ion-tab>
+  <ion-tab [root]="wishlist" tabIcon="md-heart-outline"></ion-tab>
 </ion-tabs>

@@ -1,0 +1,52 @@
+<ion-header>
+    <ion-navbar  color="transparent" >
+        <ion-buttons start>
+            <button ion-button menuToggle>
+                <ion-icon name="md-menu"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>{{config.get_translation('blog_page')}}</ion-title>
+            <ion-buttons end>
+                <button ion-button (click)="openSearch()">
+                    <ion-icon name="md-search"></ion-icon>
+                </button>
+            </ion-buttons>
+            <ion-buttons end>
+                <button ion-button [navPush]="profilePage" [navParams]="userdata">
+                    <ion-icon name="md-contact" *ngIf="!config.isLoggedIn"></ion-icon>
+                    <img *ngIf="config.isLoggedIn" [src]="config.user?.avatar">
+                </button>
+            </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingText="{{config.get_translation('pull_to_refresh')}}"
+          pullingIcon="arrow-dropdown"
+          refreshingSpinner="circles"
+          refreshingText="{{config.get_translation('refreshing')}}"></ion-refresher-content>
+    </ion-refresher>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12 col-sm-6 col-md-4 col-lg-3 *ngFor="let post of blog?.posts" >
+                <ion-card (click)="loadPost(post)">
+                    <lazy-img [inputSrc]="post.featured_image" *ngIf="post.featured_image"></lazy-img>
+                    <ion-item>
+                        <ion-avatar item-start>
+                          <lazy-img [inputSrc]="post.author.avatar"></lazy-img>
+                        </ion-avatar> 
+                        <h2 [innerHtml]="post.author.name"></h2>
+                        <p [innerHtml]="post.date"></p>
+                    </ion-item>
+                    <ion-card-content>
+                        <ion-card-title [innerHtml]="post.title"></ion-card-title>
+                        <div class="content" [innerHtml]="post.excerpt"></div>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            <ion-infinite-scroll *ngIf="!noMorePostsAvailable" (ionInfinite)="doInfinite($event)">
+                <ion-infinite-scroll-content></ion-infinite-scroll-content>
+            </ion-infinite-scroll>  
+        </ion-row>
+    </ion-grid>
+</ion-content>

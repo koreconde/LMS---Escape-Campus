@@ -1,0 +1,110 @@
+<ion-header>
+  	<ion-buttons start>
+        <button ion-button icon-only (click)="onClose()">
+            <ion-icon name="md-arrow-back"></ion-icon>
+        </button>
+    </ion-buttons>
+</ion-header>
+<ion-content>
+<ion-grid>
+    <ion-row>
+        <ion-col col-12 col-sm-4>
+            <div class="instructor_main">
+            	<div class="instructor_image">
+            		<img [src]="instructor.avatar">
+            	</div>
+
+            	<div class="instructor_content">
+            		<h3 [innerHtml]="instructor.name"></h3>
+            		<p *ngIf="instructor.sub != 'false'" [innerHtml]="instructor.sub"></p>
+            	</div>
+            </div>
+        </ion-col>
+        <ion-col col-12 col-sm-8>
+        <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" #InstructorTabs id="instructortabs" spaceBetween="0" slidesPerView="3" (ionSlideDidChange)="onTabChanged()">
+            <ion-slide *ngFor="let tab of instructortabs; let i=index;">
+              <button ion-button clear (click)="selectedTab(i)">
+                {{tab.label}}
+              </button>
+            </ion-slide>
+        </ion-slides>
+         <div id="instructorcontent" padding>
+            <ion-slides id="instructorslides" #InstructorSlides (ionSlideDidChange)="onSlideChanged()">
+                <ion-slide *ngFor="let tab of instructortabs; let i=index;">
+                    <h3 class="heading"><span>{{tab.label}}</span></h3>
+                    <div *ngIf="tab.key == 'profile'">
+                    	<ion-list>
+                    		<ion-item>
+                    			<ion-label>Number of Students</ion-label>
+        						<strong>{{instructor.student_count}}</strong>
+                    		</ion-item>
+                    		<ion-item>
+                    			<ion-label>Number of Courses</ion-label>
+        						<strong>{{instructor.course_count}}</strong>
+                    		</ion-item>
+                    		<ion-item>
+                    			<ion-label>Cumulative Average Rating</ion-label>
+                    			<star-rating [rating]="instructor.average_rating" align-right></star-rating>
+                    		</ion-item>
+                    	</ion-list >
+
+
+                    	<ion-list *ngIf="fullinstructor && fullinstructor.social.length">
+                    		<ion-col *ngFor="let icons of fullinstructor.social" >
+        						<a [href]="icons.value" [innerHtml]="icons.name" *ngIf="icons.value != 'false'"></a>
+            				</ion-col>
+                    	</ion-list>
+                    	<ion-grid>
+                    		<ion-row>
+                    			<ion-col>
+        							<ion-icon name="md-contacts"></ion-icon>
+        							<strong>{{instructor.student_count}}</strong>
+        						</ion-col>
+        						<ion-col>
+        							<ion-icon name="md-book"></ion-icon>
+        							<strong>{{instructor.course_count}}</strong>
+        						</ion-col>
+        						<ion-col>
+        							<star-rating [rating]="instructor.average_rating" align-right></star-rating>
+        						</ion-col>
+                    		</ion-row>
+                    		<ion-row>
+                    			<ion-col>
+                    				<div [innerHtml]="fullinstructor.bio"></div>
+                    			</ion-col>
+                    		</ion-row>
+                    		<ion-row>
+                    			<div class="social-icons" *ngIf="fullinstructor.social.length">
+                    				<ion-col *ngFor="let icons of fullinstructor.social" >
+                						<a [href]="icons.value" [innerHtml]="icons.name" *ngIf="icons.value != 'false'"></a>
+                    				</ion-col>
+                    			</div>
+                    		</ion-row>
+                    	</ion-grid>
+                    </div>
+                    <div *ngIf="tab.key == 'about'">
+                    	<ion-list *ngIf="fullinstructor.about.length">
+                    		<ion-item *ngFor="let field of fullinstructor.about">
+                    			<div *ngIf="field.value != 'false'">
+        	            			<ion-col [innerHtml]="field.name"></ion-col>
+        	            			<ion-col [innerHtml]="field.value"></ion-col>
+                    			</div>
+                    		</ion-item>
+                    	</ion-list>
+                    </div>
+                    <div *ngIf="tab.key == 'courses'">
+                    	<ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" pager slidesPerView="2">
+                    		<ion-slide *ngFor="let course of fullinstructor.courses">
+                                <coursecard [course]="course.data"></coursecard>
+                    		</ion-slide>
+                    	</ion-slides>
+                    	<button ion-button block full [navPush]="directoryPage" [navParams]="instructor" [innerHtml]="config.get_translation('get_all_course_by_instructor')"></button>
+                    </div>
+                </ion-slide>
+            </ion-slides>
+        </div>
+        </ion-col>
+    </ion-row>
+</ion-grid>
+
+</ion-content>
