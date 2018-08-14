@@ -1,0 +1,8 @@
+{
+  "name": "escape_app",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "pro_id": "ceabbc8a"
+}
