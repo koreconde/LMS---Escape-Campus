@@ -11,7 +11,10 @@
 
 <ion-content elastic-header fixedscrollheader>
 
-    <div id="featured" *ngIf="featured && featured.length && config.homePage.featuredCourseSlider">
+  
+<div id="homecontent" padding>
+
+  <div *ngIf="featured && featured.length && config.homePage.featuredCourseSlider" id="featured">
         <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" spaceBetween="0">
             <ion-slide *ngFor="let course of featured">
                  <lazy-img [inputSrc]="course.featured_image" [navPush]="coursePage" [navParams]="course">2</lazy-img>
@@ -20,26 +23,6 @@
         </ion-slides>
     </div>
 
-    <div id="homecontent" padding>
-
-        <div *ngIf="categories.length && config.homePage.categories">
-
-        <h3 class="heading"><a [navPush]="categoryPage"><ion-icon ios="ios-more" md="md-more"></ion-icon></a><span>{{config.get_translation('categories_title_home_page')}}</span><span>{{config.get_translation('categories_subtitle_home_page')}}</span></h3>
-       
-        <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" id="categories" spaceBetween="0" slidesPerView="3">
-            <ion-slide *ngFor="let category of categories">
-                <ion-card [navPush]="categoryPage" [navParams]="category">
-                    <div class="featured_category_block">
-                        <lazy-img [inputSrc]="category.image"></lazy-img>
-                        <div class="category-content">
-                            <div class="category-title">{{category.name}}</div>
-                            <div class="category-subtitle">{{category.count}} {{config.get_translation('courses')}}</div>
-                        </div>
-                    </div>
-                  </ion-card>
-            </ion-slide>
-        </ion-slides>
-    </div>
 
         <div *ngIf="popular.length && config.homePage.popular">
             <h3 class="heading"><a [navPush]="categoryPage" [navParams]="{sortby:'popular'}"> <ion-icon ios="ios-more" md="md-more"></ion-icon></a><span>{{config.get_translation('popular_courses_title_home_page')}}</span><span>{{config.get_translation('popular_courses_subtitle_home_page')}}</span></h3>
@@ -51,6 +34,23 @@
                 </ion-slides>
             </div>
         </div>
+
+        <div *ngIf="categories.length && config.homePage.categories">
+                <h3 class="heading"><a [navPush]="categoryPage"><ion-icon ios="ios-more" md="md-more"></ion-icon></a><span>{{config.get_translation('categories_title_home_page')}}</span><span>{{config.get_translation('categories_subtitle_home_page')}}</span></h3>
+                <ion-slides dir="{{config.settings.rtl ? 'rtl' : undefined }}" id="categories" spaceBetween="0" slidesPerView="3">
+                    <ion-slide *ngFor="let category of categories">
+                        <ion-card [navPush]="categoryPage" [navParams]="category">
+                            <div class="featured_category_block">
+                                <lazy-img [inputSrc]="category.image"></lazy-img>
+                                <div class="category-content">
+                                    <div class="category-title">{{category.name}}</div>
+                                    <div class="category-subtitle">{{category.count}} {{config.get_translation('courses')}}</div>
+                                </div>
+                            </div>
+                          </ion-card>
+                    </ion-slide>
+                </ion-slides>
+            </div>
         
         <!-- <div *ngIf="featured.length && config.homePage.featured">
             <h3 class="heading"><span>{{config.get_translation('featured_courses')}}</span><span>{{config.get_translation('selected_courses')}}</span></h3>
