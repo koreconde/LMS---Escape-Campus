@@ -1,7 +1,16 @@
 page-home {
 	.scroll-content{margin-top:0 !important;}
 
-	
+
+	.toolbar-ios {
+		min-height: 55px;
+	}
+
+	ion-navbar {
+		position:fixed;
+		color: #313b3d;
+		height: 2em;
+	}
 	
 	#loading{
 		position:fixed;
@@ -58,9 +67,15 @@ page-home {
 	#homecontent{
 		z-index:9;position:relative;
 		background: #f6f6f6;
+		height: 100%;
 	}
 	
-	#popular_courses{
+	// #popular_courses{
 		
-	} 
+	// } 
+
+	.scroll-content {
+		top: 55px;
+
+	}
 }
